@@ -27,7 +27,7 @@ universal = true
 
 [tool.setuptools]
 packages = [
-    "tealogger"
+    "Logger"
 ]
 
 [tool.setuptools.dynamic]
