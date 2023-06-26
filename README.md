@@ -1,2 +1,2 @@
-# Python-TeaLogger
+# Tea Logger
 Python Tea Logger
