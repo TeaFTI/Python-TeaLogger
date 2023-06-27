@@ -78,8 +78,10 @@ class LoggerFormatter(logging.Formatter):
         ) -> None:
         """Constructor
 
-        :param log_format: (str) the log format for the Formatter
+        :param record_format: (str) the record format for the Formatter
+        :type record_format: str, default to `RECORD_FORMAT` constant
         :param date_format: (str) the date format for the Formatter
+        :type date_format: str, default to `DATE_FORMAT` constant
         """
         # Call super class
         super().__init__(fmt=record_format, datefmt=date_format)
@@ -124,8 +126,10 @@ class Logger(logging.Logger):
         # level: int | str = NOTSET) -> None:
         """Constructor
         
-        :param name: (str) the name of the logger
-        :param level: (int) or (str) initialize the level of the logger
+        :param name: the name of the logger
+        :type name: str
+        :param level: initialize the level of the logger
+        :type level: int or str, default to `NOTSET`
         """
 
         # Call super class
@@ -171,8 +175,10 @@ class Logger(logging.Logger):
         Enable user to set a different format for the log record and the
         log date.
 
-        :param record_format: (str) the new format for the log record
-        :param date_format: (str) the new format for the log date
+        :param record_format: the new format for the log record
+        :type record_format: str, default to `RECORD_FORMAT` constant
+        :param date_format: the new format for the log date
+        :type date_format: str, default to `DATE_FORMAT` constant
         """
 
         self.handlers.clear()
@@ -194,3 +200,87 @@ class Logger(logging.Logger):
                 )
             )
         self.addHandler(self.stderr_handler)
+
+
+root = Logger('logger')
+
+
+def critical(
+    message: str,
+    *args,
+    **kwargs
+    ):
+    """Log `message` with severity `CRITICAL` level.
+
+    :param message: the message to log
+    :type message: str
+    """
+    root.critical(message, *args, **kwargs)
+
+
+def error(
+    message: str,
+    *args,
+    **kwargs
+    ):
+    """Log `message` with severity `ERROR` level.
+
+    :param message: the message to log
+    :type message: str
+    """
+    root.error(message, *args, **kwargs)
+
+
+def warning(
+    message: str,
+    *args,
+    **kwargs
+    ):
+    """Log `message` with severity `WARNING` level.
+
+    :param message: the message to log
+    :type message: str
+    """
+    root.warning(message, *args, **kwargs)
+
+
+def info(
+    message: str,
+    *args,
+    **kwargs
+    ):
+    """Log `message` with severity `INFO` level.
+
+    :param message: the message to log
+    :type message: str
+    """
+    root.info(message, *args, **kwargs)
+
+
+def debug(
+    message: str,
+    *args,
+    **kwargs
+    ):
+    """Log `message` with severity `DEBUG` level.
+
+    :param message: the message to log
+    :type message: str
+    """
+    root.debug(message, *args, **kwargs)
+
+
+def log(
+    level,
+    message: str,
+    *args,
+    **kwargs
+    ):
+    """Log `message` with give `level` severity.
+
+    :param level: the severity level for the log
+    :type level: int, use predefined log level
+    :param message: the message to log
+    :type message: str
+    """
+    root.log(level, message, *args, **kwargs)
