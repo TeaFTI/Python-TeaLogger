@@ -3,8 +3,6 @@
 This module test functionality for the logger.
 """
 
-import pytest
-
 from tealogger import logger
 
 
