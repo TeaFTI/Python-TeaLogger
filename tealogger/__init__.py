@@ -1,3 +1,5 @@
+"""Tea Logger is a simple logger package for Python."""
+
 from .logger import (
     CRITICAL,
     ERROR,
