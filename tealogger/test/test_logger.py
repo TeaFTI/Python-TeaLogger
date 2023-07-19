@@ -17,6 +17,25 @@ def test_initialize():
     assert isinstance(test_logger, logger.Logger)
 
 
+def test_short_record_format():
+    """Test short format log
+
+    Create an instance of Logger, and set the formatter using
+    `SHORT_RECORD_FORMAT`, and log messages using different level
+    """
+    test_logger = logger.Logger('test-logger')
+
+    test_logger.set_formatter(
+        record_format=logger.SHORT_RECORD_FORMAT,
+        )
+
+    test_logger.debug('Debug Message')
+    test_logger.info('Info Message')
+    test_logger.warning('Warning Message')
+    test_logger.error('Error Message')
+    test_logger.critical('Critical Message')
+
+
 def test_color_success():
     """Test display of log messages and color
 
