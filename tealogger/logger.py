@@ -18,8 +18,9 @@ INFO = logging.INFO
 DEBUG = logging.DEBUG
 NOTSET = logging.NOTSET
 
-_RECORD_FORMAT = '[%(name)s %(levelname)s %(asctime)s] %(message)s'
-_DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
+DEFAULT_RECORD_FORMAT = '[%(levelname)s %(name)s %(asctime)s] %(message)s'
+DEFAULT_DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
+SHORT_RECORD_FORMAT = '[%(levelname)-.1s %(asctime)s] %(message)s'
 
 _COLOR_CODE = {
     # Reset
@@ -73,8 +74,8 @@ class LoggerFormatter(logging.Formatter):
 
     def __init__(
         self,
-        record_format: str = _RECORD_FORMAT,
-        date_format: str = _DATE_FORMAT
+        record_format: str = DEFAULT_RECORD_FORMAT,
+        date_format: str = DEFAULT_DATE_FORMAT
         ) -> None:
         """Constructor
 
@@ -187,8 +188,8 @@ class Logger(logging.Logger):
 
     def set_formatter(
         self,
-        record_format: str = _RECORD_FORMAT,
-        date_format: str = _DATE_FORMAT
+        record_format: str = DEFAULT_RECORD_FORMAT,
+        date_format: str = DEFAULT_DATE_FORMAT
         ) -> None:
         """Set Formatter for Logger
 
