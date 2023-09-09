@@ -1,6 +1,6 @@
 # Publish a Python Distribution
 
-name: Publish Python 🐍 distributions 📦 to PyPI and PyPI Test
+name: Publish Python 🐍 Package 📦
 
 # on:
 #   release:
