@@ -53,7 +53,7 @@ _COLOR_CODE = {
     'STYLE_REVERSE': '\x1b[7m',
     'STYLE_HIDDEN': '\x1b[8m',
     'STYLE_DEFAULT': '\x1b[22m',
-    }
+}
 
 _LEVEL_COLOR_CODE = {
     'NOTSET': _COLOR_CODE['RESET'],
@@ -63,7 +63,7 @@ _LEVEL_COLOR_CODE = {
     'SUCCESS': _COLOR_CODE['FOREGROUND_GREEN'],
     'ERROR': _COLOR_CODE['FOREGROUND_RED'],
     'CRITICAL': f"{_COLOR_CODE['FOREGROUND_RED']}{_COLOR_CODE['BACKGROUND_WHITE']}",
-    }
+}
 
 
 class LoggerFormatter(logging.Formatter):
@@ -76,13 +76,15 @@ class LoggerFormatter(logging.Formatter):
         self,
         record_format: str = DEFAULT_RECORD_FORMAT,
         date_format: str = DEFAULT_DATE_FORMAT
-        ) -> None:
+    ) -> None:
         """Constructor
 
-        :param record_format: (str) the record format for the Formatter
-        :type record_format: str, default to `RECORD_FORMAT` constant
-        :param date_format: (str) the date format for the Formatter
-        :type date_format: str, default to `DATE_FORMAT` constant
+        :param record_format: (str) the record format for the Formatter,
+            defaults to `RECORD_FORMAT` constant
+        :type record_format: str
+        :param date_format: (str) the date format for the Formatter,
+            defaults to `DATE_FORMAT` constant
+        :type date_format: str
         """
         # Call super class
         super().__init__(fmt=record_format, datefmt=date_format)
@@ -92,37 +94,37 @@ class LoggerFormatter(logging.Formatter):
                 f"{_LEVEL_COLOR_CODE['DEBUG']}"
                 f"{record_format}"
                 f"{_LEVEL_COLOR_CODE['NOTSET']}"
-                ),
+            ),
             logging.INFO: (
                 f"{_LEVEL_COLOR_CODE['INFO']}"
                 f"{record_format}"
                 f"{_LEVEL_COLOR_CODE['NOTSET']}"
-                ),
+            ),
             logging.WARNING: (
                 f"{_LEVEL_COLOR_CODE['WARNING']}"
                 f"{record_format}"
                 f"{_LEVEL_COLOR_CODE['NOTSET']}"
-                ),
+            ),
             logging.ERROR: (
                 f"{_LEVEL_COLOR_CODE['ERROR']}"
                 f"{record_format}"
                 f"{_LEVEL_COLOR_CODE['NOTSET']}"
-                ),
+            ),
             logging.CRITICAL: (
                 f"{_LEVEL_COLOR_CODE['CRITICAL']}"
                 f"{record_format}"
                 f"{_LEVEL_COLOR_CODE['NOTSET']}"
-                ),
-            }
+            ),
+        }
 
         self.date_format = date_format
-
 
     def format(self, record: LogRecord) -> str:
         """Format the specified record as text (redefined)
 
-        :param record: (dict) the record to format, used for string
-            formatting operation
+        :param record: the record to format, used for string formatting
+            operation
+        :type record: dict
 
         :return: (str) the formatted record
         """
@@ -133,7 +135,7 @@ class LoggerFormatter(logging.Formatter):
 
 
 class Logger(logging.Logger):
-    """Logger class for AutoTools
+    """Logger class
 
     A Logger with predefined log format.
     """
@@ -142,15 +144,16 @@ class Logger(logging.Logger):
         self,
         name: str,
         level=NOTSET
-        ) -> None:
+    ) -> None:
         # No UnionType yet
         # level: int | str = NOTSET) -> None:
         """Constructor
-        
+
         :param name: the name of the logger
         :type name: str
-        :param level: initialize the level of the logger
-        :type level: int or str, default to `NOTSET`
+        :param level: initialize the level of the logger, defaults to
+            `NOTSET`
+        :type level: int or str
         """
 
         # Call super class
@@ -159,10 +162,9 @@ class Logger(logging.Logger):
         # Initialize handler
         self._initialize_handler()
 
-
     def _initialize_handler(self) -> None:
         """Initialize Handler for Logger
-        
+
         Initialize the Handler for both `stdout` and `stderr`. By
         default, `DEBUG`, `INFO`, and `WARNING` will be logged to
         `stdout`, while `ERROR` and `CRITICAL` will be logged to
@@ -185,21 +187,22 @@ class Logger(logging.Logger):
         self.stderr_handler.setFormatter(LoggerFormatter())
         self.addHandler(self.stderr_handler)
 
-
     def set_formatter(
         self,
         record_format: str = DEFAULT_RECORD_FORMAT,
         date_format: str = DEFAULT_DATE_FORMAT
-        ) -> None:
+    ) -> None:
         """Set Formatter for Logger
 
         Enable user to set a different format for the log record and the
         log date.
 
-        :param record_format: the new format for the log record
-        :type record_format: str, default to `RECORD_FORMAT` constant
-        :param date_format: the new format for the log date
-        :type date_format: str, default to `DATE_FORMAT` constant
+        :param record_format: the new format for the log record,
+            defaults to `RECORD_FORMAT` constant
+        :type record_format: str
+        :param date_format: the new format for the log date, defaults to
+            `DATE_FORMAT` constant
+        :type date_format: str
         """
 
         self.handlers.clear()
@@ -209,8 +212,8 @@ class Logger(logging.Logger):
             LoggerFormatter(
                 record_format=record_format,
                 date_format=date_format
-                )
             )
+        )
         self.addHandler(self.stdout_handler)
 
         # Set formatter for `stderr` handler
@@ -218,8 +221,8 @@ class Logger(logging.Logger):
             LoggerFormatter(
                 record_format=record_format,
                 date_format=date_format
-                )
             )
+        )
         self.addHandler(self.stderr_handler)
 
 
@@ -230,7 +233,7 @@ def critical(
     message: str,
     *args,
     **kwargs
-    ):
+):
     """Log `message` with severity `CRITICAL` level.
 
     :param message: the message to log
@@ -243,7 +246,7 @@ def error(
     message: str,
     *args,
     **kwargs
-    ):
+):
     """Log `message` with severity `ERROR` level.
 
     :param message: the message to log
@@ -256,7 +259,7 @@ def warning(
     message: str,
     *args,
     **kwargs
-    ):
+):
     """Log `message` with severity `WARNING` level.
 
     :param message: the message to log
@@ -269,7 +272,7 @@ def info(
     message: str,
     *args,
     **kwargs
-    ):
+):
     """Log `message` with severity `INFO` level.
 
     :param message: the message to log
@@ -282,7 +285,7 @@ def debug(
     message: str,
     *args,
     **kwargs
-    ):
+):
     """Log `message` with severity `DEBUG` level.
 
     :param message: the message to log
@@ -296,7 +299,7 @@ def log(
     message: str,
     *args,
     **kwargs
-    ):
+):
     """Log `message` with give `level` severity.
 
     :param level: the severity level for the log
