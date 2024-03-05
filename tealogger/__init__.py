@@ -6,7 +6,7 @@ from .tealogger import (
     WARNING,
     INFO,
     DEBUG
-    )
+)
 
 from .tealogger import (
     critical,
@@ -15,6 +15,6 @@ from .tealogger import (
     info,
     debug,
     log
-    )
+)
 
 from .tealogger import TeaLogger
