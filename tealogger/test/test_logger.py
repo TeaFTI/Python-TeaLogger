@@ -3,7 +3,7 @@
 This module test functionality for the logger.
 """
 
-from tealogger import logger
+from tealogger import tealogger
 
 
 def test_initialize():
@@ -13,8 +13,8 @@ def test_initialize():
     is of Logger type.
     """
 
-    test_logger = logger.Logger('test-logger')
-    assert isinstance(test_logger, logger.Logger)
+    test_logger = tealogger.TeaLogger('test-logger')
+    assert isinstance(test_logger, tealogger.TeaLogger)
 
 
 def test_short_record_format():
@@ -23,10 +23,10 @@ def test_short_record_format():
     Create an instance of Logger, and set the formatter using
     `SHORT_RECORD_FORMAT`, and log messages using different level
     """
-    test_logger = logger.Logger('test-logger')
+    test_logger = tealogger.TeaLogger('test-logger')
 
     test_logger.set_formatter(
-        record_format=logger.SHORT_RECORD_FORMAT,
+        record_format=tealogger.SHORT_RECORD_FORMAT,
         )
 
     test_logger.debug('Debug Message')
@@ -43,7 +43,7 @@ def test_color_success():
     level to display different color.
     """
 
-    test_logger = logger.Logger('test-logger')
+    test_logger = tealogger.TeaLogger('test-logger')
 
     test_logger.debug('Debug Message')
     test_logger.info('Info Message')

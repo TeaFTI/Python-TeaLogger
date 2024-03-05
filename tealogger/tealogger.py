@@ -134,7 +134,7 @@ class LoggerFormatter(logging.Formatter):
         return formatter.format(record)
 
 
-class Logger(logging.Logger):
+class TeaLogger(logging.Logger):
     """Logger class
 
     A Logger with predefined log format.
@@ -226,7 +226,7 @@ class Logger(logging.Logger):
         self.addHandler(self.stderr_handler)
 
 
-root = Logger('logger')
+root = TeaLogger('tealogger')
 
 
 def critical(
