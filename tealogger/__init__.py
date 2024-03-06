@@ -1,6 +1,11 @@
 """Tea Logger is a simple logger package for Python."""
 
-from .tealogger import (
+from tealogger.tealogger import (
+    DefaultFormatter,
+    TeaLogger
+)
+
+from tealogger.tealogger import (
     CRITICAL,
     ERROR,
     WARNING,
@@ -8,7 +13,7 @@ from .tealogger import (
     DEBUG
 )
 
-from .tealogger import (
+from tealogger.tealogger import (
     critical,
     error,
     warning,
@@ -16,5 +21,3 @@ from .tealogger import (
     debug,
     log
 )
-
-from .tealogger import TeaLogger
