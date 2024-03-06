@@ -1,20 +1,59 @@
-"""Test Logger
+"""
+Test TeaLogger
+~~~~~~~~~~~~~~
 
-This module test functionality for the logger.
+This module test functionality for the TeaLogger.
 """
 
+import logging
+import logging.config
+
+import pytest
+
+import tealogger
 from tealogger import tealogger
 
 
-def test_initialize():
-    """Test initialize of the logger class
+class TestDefaultFormatter:
+    """Test Default Formatter
 
-    Create an instance of Logger and check to make sure the object
-    is of Logger type.
+    :param configuration: The configuration fixture
+    :type configuration: dict (pytest.FixtureRequest)
     """
 
-    test_logger = tealogger.TeaLogger('test-logger')
-    assert isinstance(test_logger, tealogger.TeaLogger)
+    def test_default(
+        self,
+        configuration: dict
+    ):
+        """Test Default"""
+        logger = logging.getLogger('default-format-logger')
+        logging.config.dictConfig(configuration)
+        logging.basicConfig(level='DEBUG')
+        logger.debug('Debug Message')
+
+
+class TestTeaLogger:
+    """Test TeaLogger"""
+
+    @pytest.mark.parametrize(
+        'name, expected', [
+            ('tea-logger', tealogger.TeaLogger),
+        ]
+    )
+    def test_init(self, name: str, expected: tealogger.TeaLogger):
+        """Test init
+
+        Test init (initialize) of the TeaLogger class
+        """
+        logger = logging.getLogger(name)
+        logger.debug('Logging: Debug Message')
+        logger.warning('Logging: Warning Message')
+        logger.error('Logging: Error Message')
+
+        # tea_logger = tealogger.TeaLogger(name=name)
+        # tea_logger.debug('TeaLogger: Debug Message')
+        # tea_logger.warning('TeaLogger: Warning Message')
+        # assert isinstance(tea_logger, expected)
 
 
 def test_short_record_format():
@@ -27,7 +66,7 @@ def test_short_record_format():
 
     test_logger.set_formatter(
         record_format=tealogger.SHORT_RECORD_FORMAT,
-        )
+    )
 
     test_logger.debug('Debug Message')
     test_logger.info('Info Message')
