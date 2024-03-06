@@ -4,8 +4,10 @@ This module implements the Tea Logger.
 """
 
 import logging
+import logging.config
 from logging import LogRecord
 import sys
+from typing import (override, Union)
 
 
 # Log Level
@@ -66,51 +68,51 @@ _LEVEL_COLOR_CODE = {
 }
 
 
-class LoggerFormatter(logging.Formatter):
-    """Formatter for the Logger
+class DefaultFormatter(logging.Formatter):
+    """Default Formatter
 
-    Define a custom Logger Formatter with color.
+    Define a default Formatter.
     """
 
     def __init__(
         self,
-        record_format: str = DEFAULT_RECORD_FORMAT,
-        date_format: str = DEFAULT_DATE_FORMAT
+        record_format: Union[str, None] = None,
+        date_format: Union[str, None] = None
     ) -> None:
         """Constructor
 
-        :param record_format: (str) the record format for the Formatter,
-            defaults to `RECORD_FORMAT` constant
-        :type record_format: str
-        :param date_format: (str) the date format for the Formatter,
-            defaults to `DATE_FORMAT` constant
-        :type date_format: str
+        :param record_format: The record format for the Formatter,
+            defaults to `None`, set from configuration
+        :type record_format: str, optional
+        :param date_format: The date format for the Formatter, defaults
+            to `None`, set from configuration
+        :type date_format: str, optional
         """
         # Call super class
         super().__init__(fmt=record_format, datefmt=date_format)
 
         self._level_format = {
-            logging.DEBUG: (
+            DEBUG: (
                 f"{_LEVEL_COLOR_CODE['DEBUG']}"
                 f"{record_format}"
                 f"{_LEVEL_COLOR_CODE['NOTSET']}"
             ),
-            logging.INFO: (
+            INFO: (
                 f"{_LEVEL_COLOR_CODE['INFO']}"
                 f"{record_format}"
                 f"{_LEVEL_COLOR_CODE['NOTSET']}"
             ),
-            logging.WARNING: (
+            WARNING: (
                 f"{_LEVEL_COLOR_CODE['WARNING']}"
                 f"{record_format}"
                 f"{_LEVEL_COLOR_CODE['NOTSET']}"
             ),
-            logging.ERROR: (
+            ERROR: (
                 f"{_LEVEL_COLOR_CODE['ERROR']}"
                 f"{record_format}"
                 f"{_LEVEL_COLOR_CODE['NOTSET']}"
             ),
-            logging.CRITICAL: (
+            CRITICAL: (
                 f"{_LEVEL_COLOR_CODE['CRITICAL']}"
                 f"{record_format}"
                 f"{_LEVEL_COLOR_CODE['NOTSET']}"
@@ -119,10 +121,11 @@ class LoggerFormatter(logging.Formatter):
 
         self.date_format = date_format
 
+    @override
     def format(self, record: LogRecord) -> str:
         """Format the specified record as text (redefined)
 
-        :param record: the record to format, used for string formatting
+        :param record: The record to format, used for string formatting
             operation
         :type record: dict
 
@@ -135,18 +138,16 @@ class LoggerFormatter(logging.Formatter):
 
 
 class TeaLogger(logging.Logger):
-    """Logger class
+    """TeaLogger class
 
-    A Logger with predefined log format.
+    A TeaLogger with predefined log format.
     """
 
     def __init__(
         self,
         name: str,
-        level=NOTSET
+        level: Union[int, str] = NOTSET,
     ) -> None:
-        # No UnionType yet
-        # level: int | str = NOTSET) -> None:
         """Constructor
 
         :param name: the name of the logger
@@ -160,73 +161,84 @@ class TeaLogger(logging.Logger):
         super().__init__(name=name, level=level)
 
         # Initialize handler
-        self._initialize_handler()
+        # self._initialize_handler()
 
-    def _initialize_handler(self) -> None:
-        """Initialize Handler for Logger
-
-        Initialize the Handler for both `stdout` and `stderr`. By
-        default, `DEBUG`, `INFO`, and `WARNING` will be logged to
-        `stdout`, while `ERROR` and `CRITICAL` will be logged to
-        `stderr`.
-        """
-
-        # Initialize `stdout` handler
-        self.stdout_handler = logging.StreamHandler(sys.stdout)
-        self.stdout_handler.set_name('stdout-handler')
-        self.stdout_handler.setLevel(DEBUG)
-        self.stdout_handler.addFilter(lambda record: record.levelno < ERROR)
-        self.stdout_handler.setFormatter(LoggerFormatter())
-        self.addHandler(self.stdout_handler)
-
-        # Initialize `stderr` handler
-        self.stderr_handler = logging.StreamHandler()
-        self.stderr_handler.set_name('stderr-handler')
-        self.stderr_handler.setLevel(ERROR)
-        self.stderr_handler.addFilter(lambda record: record.levelno >= ERROR)
-        self.stderr_handler.setFormatter(LoggerFormatter())
-        self.addHandler(self.stderr_handler)
-
-    def set_formatter(
+    def _initialize_configuration(
         self,
-        record_format: str = DEFAULT_RECORD_FORMAT,
-        date_format: str = DEFAULT_DATE_FORMAT
     ) -> None:
-        """Set Formatter for Logger
+        """Initialize Configuration for Logger
 
-        Enable user to set a different format for the log record and the
-        log date.
-
-        :param record_format: the new format for the log record,
-            defaults to `RECORD_FORMAT` constant
-        :type record_format: str
-        :param date_format: the new format for the log date, defaults to
-            `DATE_FORMAT` constant
-        :type date_format: str
+        Initialize the `default` configuration for the logger. The
+        `default` initial configuration is set by the `default.json`
+        file in the `configuration` directory.
         """
+        ...
 
-        self.handlers.clear()
+    # def _initialize_handler(self) -> None:
+    #     """Initialize Handler for Logger
 
-        # Set formatter for `stdout` handler
-        self.stdout_handler.setFormatter(
-            LoggerFormatter(
-                record_format=record_format,
-                date_format=date_format
-            )
-        )
-        self.addHandler(self.stdout_handler)
+    #     Initialize the Handler for both `stdout` and `stderr`. By
+    #     default, `DEBUG`, `INFO`, and `WARNING` will be logged to
+    #     `stdout`, while `ERROR` and `CRITICAL` will be logged to
+    #     `stderr`.
+    #     """
 
-        # Set formatter for `stderr` handler
-        self.stderr_handler.setFormatter(
-            LoggerFormatter(
-                record_format=record_format,
-                date_format=date_format
-            )
-        )
-        self.addHandler(self.stderr_handler)
+    #     # Initialize `stdout` handler
+    #     self.stdout_handler = logging.StreamHandler(sys.stdout)
+    #     self.stdout_handler.set_name('stdout-handler')
+    #     self.stdout_handler.setLevel(DEBUG)
+    #     self.stdout_handler.addFilter(lambda record: record.levelno < ERROR)
+    #     self.stdout_handler.setFormatter(LoggerFormatter())
+    #     self.addHandler(self.stdout_handler)
+
+    #     # Initialize `stderr` handler
+    #     self.stderr_handler = logging.StreamHandler()
+    #     self.stderr_handler.set_name('stderr-handler')
+    #     self.stderr_handler.setLevel(ERROR)
+    #     self.stderr_handler.addFilter(lambda record: record.levelno >= ERROR)
+    #     self.stderr_handler.setFormatter(LoggerFormatter())
+    #     self.addHandler(self.stderr_handler)
+
+    # def set_formatter(
+    #     self,
+    #     record_format: str = DEFAULT_RECORD_FORMAT,
+    #     date_format: str = DEFAULT_DATE_FORMAT
+    # ) -> None:
+    #     """Set Formatter for Logger
+
+    #     Enable user to set a different format for the log record and the
+    #     log date.
+
+    #     :param record_format: the new format for the log record,
+    #         defaults to `RECORD_FORMAT` constant
+    #     :type record_format: str
+    #     :param date_format: the new format for the log date, defaults to
+    #         `DATE_FORMAT` constant
+    #     :type date_format: str
+    #     """
+
+    #     self.handlers.clear()
+
+    #     # Set formatter for `stdout` handler
+    #     self.stdout_handler.setFormatter(
+    #         LoggerFormatter(
+    #             record_format=record_format,
+    #             date_format=date_format
+    #         )
+    #     )
+    #     self.addHandler(self.stdout_handler)
+
+    #     # Set formatter for `stderr` handler
+    #     self.stderr_handler.setFormatter(
+    #         LoggerFormatter(
+    #             record_format=record_format,
+    #             date_format=date_format
+    #         )
+    #     )
+    #     self.addHandler(self.stderr_handler)
 
 
-root = TeaLogger('tealogger')
+tealogger = TeaLogger('tealogger')
 
 
 def critical(
@@ -239,7 +251,7 @@ def critical(
     :param message: the message to log
     :type message: str
     """
-    root.critical(message, *args, **kwargs)
+    tealogger.critical(message, *args, **kwargs)
 
 
 def error(
@@ -252,7 +264,7 @@ def error(
     :param message: the message to log
     :type message: str
     """
-    root.error(message, *args, **kwargs)
+    tealogger.error(message, *args, **kwargs)
 
 
 def warning(
@@ -265,7 +277,7 @@ def warning(
     :param message: the message to log
     :type message: str
     """
-    root.warning(message, *args, **kwargs)
+    tealogger.warning(message, *args, **kwargs)
 
 
 def info(
@@ -278,7 +290,7 @@ def info(
     :param message: the message to log
     :type message: str
     """
-    root.info(message, *args, **kwargs)
+    tealogger.info(message, *args, **kwargs)
 
 
 def debug(
@@ -291,7 +303,7 @@ def debug(
     :param message: the message to log
     :type message: str
     """
-    root.debug(message, *args, **kwargs)
+    tealogger.debug(message, *args, **kwargs)
 
 
 def log(
@@ -307,4 +319,4 @@ def log(
     :param message: the message to log
     :type message: str
     """
-    root.log(level, message, *args, **kwargs)
+    tealogger.log(level, message, *args, **kwargs)
