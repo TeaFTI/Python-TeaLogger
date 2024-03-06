@@ -1,0 +1,45 @@
+{
+    "version": 1,
+    "formatters": {
+        "base": {
+            "format": "[%(levelname)s %(name)s %(asctime)s] %(message)s",
+            "datefmt": "%Y-%m-%d %H:%M:%S"
+        },
+        "default": {
+            "()": "tealogger.DefaultFormatter",
+            "record_format": "[%(levelname)s %(name)s %(asctime)s] %(message)s",
+            "date_format": "%Y-%m-%d %H:%M:%S"
+        }
+    },
+    "filters": {},
+    "handlers": {
+        "stdout": {
+            "class": "logging.StreamHandler",
+            "level": "DEBUG",
+            "formatter": "default",
+            "filters": [],
+            "stream": "ext://sys.stdout"
+        },
+        "stderr": {
+            "class": "logging.StreamHandler",
+            "level": "ERROR",
+            "formatter": "default",
+            "filters": [],
+            "stream": "ext://sys.stderr"
+        }
+    },
+    "loggers": {
+        "root": {
+            "level": "DEBUG",
+            "propagate": "",
+            "filters": [],
+            "handlers": [
+                "stdout",
+                "stderr"
+            ]
+        }
+    },
+    "root": {},
+    "incremental": "",
+    "disable_existing_loggers": false
+}
