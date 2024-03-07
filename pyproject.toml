@@ -11,7 +11,7 @@ authors = [
     {name = "TeaFTI"},
 ]
 description = "Tea Logger"
-requires-python = ">=3.7"
+requires-python = ">=3.7.0"
 keywords = [ "tealogger" ]
 dependencies = [
     "pytest"
