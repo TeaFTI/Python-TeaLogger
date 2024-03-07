@@ -6,18 +6,10 @@ from tealogger.tealogger import (
 )
 
 from tealogger.tealogger import (
-    CRITICAL,
-    ERROR,
-    WARNING,
+    DEBUG,
     INFO,
-    DEBUG
-)
-
-from tealogger.tealogger import (
-    critical,
-    error,
-    warning,
-    info,
-    debug,
-    log
+    WARNING,
+    ERROR,
+    CRITICAL,
+    NOTSET
 )

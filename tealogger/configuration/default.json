@@ -8,7 +8,7 @@
         "default": {
             "()": "tealogger.DefaultFormatter",
             "record_format": "[%(levelname)s %(name)s %(asctime)s] %(message)s",
-            "date_format": "%Y-%m-%d %H:%M:%S"
+            "date_format": "%Y-%m-%dT%H:%M:%S%Z"
         }
     },
     "filters": {},
@@ -29,17 +29,23 @@
         }
     },
     "loggers": {
-        "root": {
+        "tea": {
             "level": "DEBUG",
-            "propagate": "",
+            "propagate": false,
             "filters": [],
             "handlers": [
-                "stdout",
-                "stderr"
+                "stdout"
             ]
         }
     },
-    "root": {},
+    "root": {
+        "level": "WARNING",
+        "propagate": false,
+        "filters": [],
+        "handlers": [
+            "stdout"
+        ]
+    },
     "incremental": "",
     "disable_existing_loggers": false
 }
