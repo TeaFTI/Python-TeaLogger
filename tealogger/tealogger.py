@@ -3,11 +3,11 @@
 This module implements the Tea Logger.
 """
 
+import json
 import logging
 import logging.config
-from logging import LogRecord
-import sys
-from typing import (override, Union)
+from pathlib import Path
+from typing import (Self, override, Union)
 
 
 # Log Level
@@ -69,25 +69,12 @@ _LEVEL_COLOR_CODE = {
 
 
 class DefaultFormatter(logging.Formatter):
-    """Default Formatter
-
-    Define a default Formatter.
-    """
 
     def __init__(
         self,
         record_format: Union[str, None] = None,
         date_format: Union[str, None] = None
     ) -> None:
-        """Constructor
-
-        :param record_format: The record format for the Formatter,
-            defaults to `None`, set from configuration
-        :type record_format: str, optional
-        :param date_format: The date format for the Formatter, defaults
-            to `None`, set from configuration
-        :type date_format: str, optional
-        """
         # Call super class
         super().__init__(fmt=record_format, datefmt=date_format)
 
@@ -122,15 +109,7 @@ class DefaultFormatter(logging.Formatter):
         self.date_format = date_format
 
     @override
-    def format(self, record: LogRecord) -> str:
-        """Format the specified record as text (redefined)
-
-        :param record: The record to format, used for string formatting
-            operation
-        :type record: dict
-
-        :return: (str) the formatted record
-        """
+    def format(self, record: logging.LogRecord) -> str:
         log_format = self._level_format.get(record.levelno)
         formatter = logging.Formatter(fmt=log_format, datefmt=self.date_format)
 
@@ -138,185 +117,23 @@ class DefaultFormatter(logging.Formatter):
 
 
 class TeaLogger(logging.Logger):
-    """TeaLogger class
 
-    A TeaLogger with predefined log format.
-    """
+    def __new__(cls, name, level) -> Self:
+        logger = logging.getLogger(name)
+        # Configuration
+        current_module_path = Path(__file__).parent.expanduser().resolve()
+        with open(current_module_path / 'configuration' / 'default.json', mode='r') as file:
+            configuration = json.load(file)
+
+        logging.config.dictConfig(configuration)
+
+        return logger
 
     def __init__(
         self,
         name: str,
         level: Union[int, str] = NOTSET,
     ) -> None:
-        """Constructor
-
-        :param name: the name of the logger
-        :type name: str
-        :param level: initialize the level of the logger, defaults to
-            `NOTSET`
-        :type level: int or str
-        """
 
         # Call super class
         super().__init__(name=name, level=level)
-
-        # Initialize handler
-        # self._initialize_handler()
-
-    def _initialize_configuration(
-        self,
-    ) -> None:
-        """Initialize Configuration for Logger
-
-        Initialize the `default` configuration for the logger. The
-        `default` initial configuration is set by the `default.json`
-        file in the `configuration` directory.
-        """
-        ...
-
-    # def _initialize_handler(self) -> None:
-    #     """Initialize Handler for Logger
-
-    #     Initialize the Handler for both `stdout` and `stderr`. By
-    #     default, `DEBUG`, `INFO`, and `WARNING` will be logged to
-    #     `stdout`, while `ERROR` and `CRITICAL` will be logged to
-    #     `stderr`.
-    #     """
-
-    #     # Initialize `stdout` handler
-    #     self.stdout_handler = logging.StreamHandler(sys.stdout)
-    #     self.stdout_handler.set_name('stdout-handler')
-    #     self.stdout_handler.setLevel(DEBUG)
-    #     self.stdout_handler.addFilter(lambda record: record.levelno < ERROR)
-    #     self.stdout_handler.setFormatter(LoggerFormatter())
-    #     self.addHandler(self.stdout_handler)
-
-    #     # Initialize `stderr` handler
-    #     self.stderr_handler = logging.StreamHandler()
-    #     self.stderr_handler.set_name('stderr-handler')
-    #     self.stderr_handler.setLevel(ERROR)
-    #     self.stderr_handler.addFilter(lambda record: record.levelno >= ERROR)
-    #     self.stderr_handler.setFormatter(LoggerFormatter())
-    #     self.addHandler(self.stderr_handler)
-
-    # def set_formatter(
-    #     self,
-    #     record_format: str = DEFAULT_RECORD_FORMAT,
-    #     date_format: str = DEFAULT_DATE_FORMAT
-    # ) -> None:
-    #     """Set Formatter for Logger
-
-    #     Enable user to set a different format for the log record and the
-    #     log date.
-
-    #     :param record_format: the new format for the log record,
-    #         defaults to `RECORD_FORMAT` constant
-    #     :type record_format: str
-    #     :param date_format: the new format for the log date, defaults to
-    #         `DATE_FORMAT` constant
-    #     :type date_format: str
-    #     """
-
-    #     self.handlers.clear()
-
-    #     # Set formatter for `stdout` handler
-    #     self.stdout_handler.setFormatter(
-    #         LoggerFormatter(
-    #             record_format=record_format,
-    #             date_format=date_format
-    #         )
-    #     )
-    #     self.addHandler(self.stdout_handler)
-
-    #     # Set formatter for `stderr` handler
-    #     self.stderr_handler.setFormatter(
-    #         LoggerFormatter(
-    #             record_format=record_format,
-    #             date_format=date_format
-    #         )
-    #     )
-    #     self.addHandler(self.stderr_handler)
-
-
-tealogger = TeaLogger('tealogger')
-
-
-def critical(
-    message: str,
-    *args,
-    **kwargs
-):
-    """Log `message` with severity `CRITICAL` level.
-
-    :param message: the message to log
-    :type message: str
-    """
-    tealogger.critical(message, *args, **kwargs)
-
-
-def error(
-    message: str,
-    *args,
-    **kwargs
-):
-    """Log `message` with severity `ERROR` level.
-
-    :param message: the message to log
-    :type message: str
-    """
-    tealogger.error(message, *args, **kwargs)
-
-
-def warning(
-    message: str,
-    *args,
-    **kwargs
-):
-    """Log `message` with severity `WARNING` level.
-
-    :param message: the message to log
-    :type message: str
-    """
-    tealogger.warning(message, *args, **kwargs)
-
-
-def info(
-    message: str,
-    *args,
-    **kwargs
-):
-    """Log `message` with severity `INFO` level.
-
-    :param message: the message to log
-    :type message: str
-    """
-    tealogger.info(message, *args, **kwargs)
-
-
-def debug(
-    message: str,
-    *args,
-    **kwargs
-):
-    """Log `message` with severity `DEBUG` level.
-
-    :param message: the message to log
-    :type message: str
-    """
-    tealogger.debug(message, *args, **kwargs)
-
-
-def log(
-    level,
-    message: str,
-    *args,
-    **kwargs
-):
-    """Log `message` with give `level` severity.
-
-    :param level: the severity level for the log
-    :type level: int, use predefined log level
-    :param message: the message to log
-    :type message: str
-    """
-    tealogger.log(level, message, *args, **kwargs)
