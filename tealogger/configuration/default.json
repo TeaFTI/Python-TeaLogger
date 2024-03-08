@@ -1,12 +1,12 @@
 {
     "version": 1,
     "formatters": {
-        "base": {
-            "format": "[%(levelname)s %(name)s %(asctime)s] %(message)s",
-            "datefmt": "%Y-%m-%d %H:%M:%S"
-        },
         "default": {
-            "()": "tealogger.tealogger.DefaultFormatter",
+            "format": "[%(levelname)s %(name)s %(asctime)s] %(message)s",
+            "datefmt": "%Y-%m-%dT%H:%M:%S%Z"
+        },
+        "color": {
+            "()": "tealogger.tealogger.ColorFormatter",
             "record_format": "[%(levelname)s %(name)s %(asctime)s] %(message)s",
             "date_format": "%Y-%m-%dT%H:%M:%S%Z"
         }
@@ -16,14 +16,14 @@
         "stdout": {
             "class": "logging.StreamHandler",
             "level": "DEBUG",
-            "formatter": "default",
+            "formatter": "color",
             "filters": [],
             "stream": "ext://sys.stdout"
         },
         "stderr": {
             "class": "logging.StreamHandler",
             "level": "ERROR",
-            "formatter": "default",
+            "formatter": "color",
             "filters": [],
             "stream": "ext://sys.stderr"
         }

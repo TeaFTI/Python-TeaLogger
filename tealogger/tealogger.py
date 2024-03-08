@@ -68,10 +68,10 @@ _LEVEL_COLOR_CODE = {
 }
 
 
-class DefaultFormatter(logging.Formatter):
-    """Default Formatter
+class ColorFormatter(logging.Formatter):
+    """Color Formatter
 
-    Define a default Formatter.
+    Define a color Formatter.
     """
 
     def __init__(
@@ -120,7 +120,7 @@ class DefaultFormatter(logging.Formatter):
             ),
         }
 
-        self.date_format = date_format
+        self._date_format = date_format
 
     @override
     def format(
@@ -137,7 +137,7 @@ class DefaultFormatter(logging.Formatter):
         :rtype: str
         """
         log_format = self._level_format.get(record.levelno)
-        formatter = logging.Formatter(fmt=log_format, datefmt=self.date_format)
+        formatter = logging.Formatter(fmt=log_format, datefmt=self._date_format)
 
         return formatter.format(record)
 
