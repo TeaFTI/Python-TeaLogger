@@ -1,6 +1,8 @@
-"""Logger Module
+"""
+Tea Logger Module
+~~~~~~~~~~~~~~~~~
 
-This module implements the Tea Logger.
+The module implements the core functionality of the Tea Logger.
 """
 
 import json
