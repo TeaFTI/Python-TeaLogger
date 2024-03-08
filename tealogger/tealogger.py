@@ -79,6 +79,16 @@ class DefaultFormatter(logging.Formatter):
         record_format: Union[str, None] = None,
         date_format: Union[str, None] = None
     ) -> None:
+        """Initialize Constructor
+
+        :param record_format: The record format for the Formatter,
+            defaults to None, set from configuration
+        :type record_format: str, optional
+        :param date_format: The date format for the Formatter, defaults
+            to None, set from configuration
+        :type date_format: str, optional
+        """
+
         # Call super class
         super().__init__(fmt=record_format, datefmt=date_format)
 
@@ -113,7 +123,19 @@ class DefaultFormatter(logging.Formatter):
         self.date_format = date_format
 
     @override
-    def format(self, record: logging.LogRecord) -> str:
+    def format(
+        self,
+        record: logging.LogRecord
+    ) -> str:
+        """Format the specified record as text (redefined)
+
+        :param record: The record to format, used for string formatting
+            operation
+        :type record: dict
+
+        :return: The formatted record
+        :rtype: str
+        """
         log_format = self._level_format.get(record.levelno)
         formatter = logging.Formatter(fmt=log_format, datefmt=self.date_format)
 
@@ -126,7 +148,7 @@ class TeaLogger(logging.Logger):
 
     def __new__(
         cls,
-        name: str = 'tea',
+        name: str,
         level: Union[int, str] = NOTSET,
         **kwargs
     ) -> Self:
@@ -154,8 +176,10 @@ class TeaLogger(logging.Logger):
 
         # Configuration
         if kwargs.get('dictConfig'):
-            ...
+            # Dictionary
+            logging.config.dictConfig(kwargs.get('dictConfig'))
         elif kwargs.get('fileConfig'):
+            # File
             ...
         else:
             # Default
@@ -166,6 +190,13 @@ class TeaLogger(logging.Logger):
                 encoding='utf-8'
             ) as file:
                 configuration = json.load(file)
+
+            if 'loggers' not in configuration:
+                configuration['loggers'] = {}
+
+            configuration['loggers'][name] = {
+                'level': logging.getLevelName(level),
+            }
 
             logging.config.dictConfig(configuration)
 
