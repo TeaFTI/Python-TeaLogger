@@ -7,7 +7,7 @@ import json
 import logging
 import logging.config
 from pathlib import Path
-from typing import (Self, override, Union)
+from typing import (override, Self, Union)
 
 
 # Log Level
@@ -69,6 +69,10 @@ _LEVEL_COLOR_CODE = {
 
 
 class DefaultFormatter(logging.Formatter):
+    """Default Formatter
+
+    Define a default Formatter.
+    """
 
     def __init__(
         self,
@@ -117,23 +121,71 @@ class DefaultFormatter(logging.Formatter):
 
 
 class TeaLogger(logging.Logger):
+    """Tea Logger
+    """
 
-    def __new__(cls, name, level) -> Self:
-        logger = logging.getLogger(name)
+    def __new__(
+        cls,
+        name: str = 'tea',
+        level: Union[int, str] = NOTSET,
+        **kwargs
+    ) -> Self:
+        """Create Constructor
+
+        Create new instance of the TeaLogger class.
+
+        :param name: The name for the TeaLogger
+        :type name: str
+        :param level: The level for the TeaLogger, defaults to NOTSET
+        :type level: int or str, optional
+        :param dictConfig: The dictionary configuration for the
+            TeaLogger, defaults to None
+        :type dictConfig: dict, optional
+        :param fileConfig: The file configuration for the TeaLogger,
+            defaults to None
+        :type fileConfig: str, optional
+
+        :return: The new instance of TeaLogger class (Self)
+        :rtype: TeaLogger
+        """
+
+        # Get (Create) the Logger
+        tea = logging.getLogger(name)
+
         # Configuration
-        current_module_path = Path(__file__).parent.expanduser().resolve()
-        with open(current_module_path / 'configuration' / 'default.json', mode='r') as file:
-            configuration = json.load(file)
+        if kwargs.get('dictConfig'):
+            ...
+        elif kwargs.get('fileConfig'):
+            ...
+        else:
+            # Default
+            current_module_path = Path(__file__).parent.expanduser().resolve()
+            with open(
+                current_module_path / 'configuration' / 'default.json',
+                mode='r',
+                encoding='utf-8'
+            ) as file:
+                configuration = json.load(file)
 
-        logging.config.dictConfig(configuration)
+            logging.config.dictConfig(configuration)
 
-        return logger
+        return tea
 
     def __init__(
         self,
         name: str,
         level: Union[int, str] = NOTSET,
     ) -> None:
+        """Initialize Constructor
 
+        Initialize the instance of the TeaLogger class.
+
+        :param name: The name for the TeaLogger
+        :type name: str
+        :param level: The level for the TeaLogger, defaults to NOTSET
+        :type level: int or str, optional
+        :return: The new instance of TeaLogger class (Self)
+        :rtype: TeaLogger
+        """
         # Call super class
         super().__init__(name=name, level=level)
