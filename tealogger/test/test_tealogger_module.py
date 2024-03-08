@@ -2,7 +2,7 @@
 Test Tea Logger Module
 ~~~~~~~~~~~~~~~~~~~~~~
 
-This module test functionality for the Tea Logger.
+This module test functionality for the Tea Logger Module.
 """
 
 import logging
@@ -12,8 +12,8 @@ import pytest
 
 import tealogger
 
-class TestTeaLogger:
-    """Test Tea Logger"""
+class TestTeaLoggerModule:
+    """Test Tea Logger Module"""
 
     @pytest.mark.parametrize(
         'name, level, expected',
