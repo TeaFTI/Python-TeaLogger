@@ -1,7 +1,6 @@
 """Tea Logger is a simple logger package for Python."""
 
 from tealogger.tealogger import (
-    DefaultFormatter,
     TeaLogger
 )
 
