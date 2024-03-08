@@ -20,10 +20,6 @@ INFO = logging.INFO
 DEBUG = logging.DEBUG
 NOTSET = logging.NOTSET
 
-DEFAULT_RECORD_FORMAT = '[%(levelname)s %(name)s %(asctime)s] %(message)s'
-DEFAULT_DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
-SHORT_RECORD_FORMAT = '[%(levelname)-.1s %(asctime)s] %(message)s'
-
 _COLOR_CODE = {
     # Reset
     'RESET': '\x1b[0m',
@@ -137,7 +133,8 @@ class ColorFormatter(logging.Formatter):
         :rtype: str
         """
         log_format = self._level_format.get(record.levelno)
-        formatter = logging.Formatter(fmt=log_format, datefmt=self._date_format)
+        formatter = logging.Formatter(
+            fmt=log_format, datefmt=self._date_format)
 
         return formatter.format(record)
 
@@ -148,7 +145,7 @@ class TeaLogger(logging.Logger):
 
     def __new__(
         cls,
-        name: str,
+        name: Union[str, None] = None,
         level: Union[int, str] = NOTSET,
         **kwargs
     ) -> Self:
@@ -156,8 +153,8 @@ class TeaLogger(logging.Logger):
 
         Create new instance of the TeaLogger class.
 
-        :param name: The name for the TeaLogger
-        :type name: str
+        :param name: The name for the TeaLogger, defaults to None
+        :type name: str or None, optional
         :param level: The level for the TeaLogger, defaults to NOTSET
         :type level: int or str, optional
         :param dictConfig: The dictionary configuration for the
@@ -193,10 +190,14 @@ class TeaLogger(logging.Logger):
 
             if 'loggers' not in configuration:
                 configuration['loggers'] = {}
+            elif name not in configuration['loggers']:
+                configuration['loggers'][name] = {}
 
-            configuration['loggers'][name] = {
-                'level': logging.getLevelName(level),
-            }
+            # NOTE: Override only individual configuration!
+            # Overriding the entire configuration will cause this child
+            # logger to inherit any missing configuration from the root
+            # logger. (Even if the configuration was set previously.)
+            configuration['loggers'][name]['level'] = logging.getLevelName(level)
 
             logging.config.dictConfig(configuration)
 
