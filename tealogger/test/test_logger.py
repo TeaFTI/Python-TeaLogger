@@ -10,7 +10,7 @@ import logging
 import tealogger
 
 class TestTeaLogger:
-    """Test TeaLogger"""
+    """Test Tea Logger"""
 
     def test_init(self):
         tea_logger = tealogger.TeaLogger(
