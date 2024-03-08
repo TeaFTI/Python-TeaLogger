@@ -1,4 +1,9 @@
-"""Tea Logger is a simple logger package for Python."""
+"""
+Tea Logger Package
+~~~~~~~~~~~~~~~~~~
+
+Tea Logger is a simple logging package for Python.
+"""
 
 from tealogger.tealogger import (
     TeaLogger

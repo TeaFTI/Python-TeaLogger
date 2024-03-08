@@ -2,7 +2,7 @@
 Test Tea Logger Module
 ~~~~~~~~~~~~~~~~~~~~~~
 
-This module test functionality for the TeaLogger.
+This module test functionality for the Tea Logger.
 """
 
 import logging
