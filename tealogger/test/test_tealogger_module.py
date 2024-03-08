@@ -1,6 +1,6 @@
 """
-Test TeaLogger
-~~~~~~~~~~~~~~
+Test Tea Logger Module
+~~~~~~~~~~~~~~~~~~~~~~
 
 This module test functionality for the TeaLogger.
 """
