@@ -6,18 +6,33 @@ This module test functionality for the TeaLogger.
 """
 
 import logging
+from typing import Union
+
+import pytest
 
 import tealogger
 
 class TestTeaLogger:
     """Test Tea Logger"""
 
-    def test_base_construction(self):
+    @pytest.mark.parametrize(
+        'name, level, expected',
+        [
+            (None, tealogger.DEBUG, logging.Logger),
+            ('base', tealogger.DEBUG, logging.Logger),
+        ]
+    )
+    def test_base_construction(
+        self,
+        name: Union[str, None],
+        level: Union[int, str],
+        expected,
+    ):
         """Test Base Construction"""
 
         base = tealogger.TeaLogger(
-            name='base',
-            level=tealogger.DEBUG
+            name=name,
+            level=level
         )
 
         base.debug('TeaLogger: Debug Message')
@@ -26,3 +41,4 @@ class TestTeaLogger:
         base.error('TeaLogger: Error Message')
         base.critical('TeaLogger: Critical Message')
 
+        assert isinstance(base, expected)

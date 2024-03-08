@@ -5,6 +5,10 @@
             "format": "[%(levelname)s %(name)s %(asctime)s] %(message)s",
             "datefmt": "%Y-%m-%dT%H:%M:%S%Z"
         },
+        "short": {
+            "format": "[%(levelname)-.1s %(asctime)s] %(message)s",
+            "datefmt": "%Y-%m-%dT%H:%M:%S%Z"
+        },
         "color": {
             "()": "tealogger.tealogger.ColorFormatter",
             "record_format": "[%(levelname)s %(name)s %(asctime)s] %(message)s",
@@ -13,6 +17,13 @@
     },
     "filters": {},
     "handlers": {
+        "default": {
+            "class": "logging.StreamHandler",
+            "level": "WARNING",
+            "formatter": "default",
+            "filters": [],
+            "stream": "ext://sys.stdout"
+        },
         "stdout": {
             "class": "logging.StreamHandler",
             "level": "DEBUG",
@@ -29,6 +40,14 @@
         }
     },
     "loggers": {
+        "base": {
+            "level": "WARNING",
+            "propagate": false,
+            "filters": [],
+            "handlers": [
+                "stdout"
+            ]
+        },
         "tea": {
             "level": "DEBUG",
             "propagate": false,
@@ -43,7 +62,7 @@
         "propagate": false,
         "filters": [],
         "handlers": [
-            "stdout"
+            "default"
         ]
     },
     "incremental": "",
