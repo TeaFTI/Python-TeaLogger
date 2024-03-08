@@ -12,11 +12,14 @@ import tealogger
 class TestTeaLogger:
     """Test Tea Logger"""
 
-    def test_init(self):
+    def test_base_construction(self):
+        """Test Base Construction"""
+
         tea_logger = tealogger.TeaLogger(
-            name='abc',
+            name='base',
             level=tealogger.DEBUG
         )
+
         tea_logger.debug('TeaLogger: Debug Message')
         tea_logger.info('TeaLogger: Info Message')
         tea_logger.warning('TeaLogger: Warning Message')
