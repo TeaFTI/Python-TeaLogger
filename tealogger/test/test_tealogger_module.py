@@ -15,14 +15,14 @@ class TestTeaLogger:
     def test_base_construction(self):
         """Test Base Construction"""
 
-        tea_logger = tealogger.TeaLogger(
+        base = tealogger.TeaLogger(
             name='base',
             level=tealogger.DEBUG
         )
 
-        tea_logger.debug('TeaLogger: Debug Message')
-        tea_logger.info('TeaLogger: Info Message')
-        tea_logger.warning('TeaLogger: Warning Message')
-        tea_logger.error('TeaLogger: Error Message')
-        tea_logger.critical('TeaLogger: Critical Message')
+        base.debug('TeaLogger: Debug Message')
+        base.info('TeaLogger: Info Message')
+        base.warning('TeaLogger: Warning Message')
+        base.error('TeaLogger: Error Message')
+        base.critical('TeaLogger: Critical Message')
 
