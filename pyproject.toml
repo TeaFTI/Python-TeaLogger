@@ -33,6 +33,11 @@ packages = [
     "tealogger"
 ]
 
+[tool.setuptools.package-data]
+tealogger = [
+    "configuration/*"
+]
+
 [tool.setuptools.dynamic]
 version = {file = "VERSION"}
 readme = {file = ["README.md"]}
