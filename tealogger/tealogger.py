@@ -9,7 +9,7 @@ import json
 import logging
 import logging.config
 from pathlib import Path
-from typing import Self, Union
+from typing import Union
 
 
 # Log Level
@@ -149,7 +149,7 @@ class TeaLogger(logging.Logger):
         name: Union[str, None] = None,
         level: Union[int, str] = NOTSET,
         **kwargs
-    ) -> Self:
+    ):
         """Create Constructor
 
         Create new instance of the TeaLogger class.
