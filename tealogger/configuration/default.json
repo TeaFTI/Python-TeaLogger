@@ -3,16 +3,16 @@
     "formatters": {
         "default": {
             "format": "[%(levelname)s %(name)s %(asctime)s] %(message)s",
-            "datefmt": "%Y-%m-%dT%H:%M:%S%Z"
+            "datefmt": "%Y-%m-%dT%H:%M:%S%z"
         },
         "short": {
             "format": "[%(levelname)-.1s %(asctime)s] %(message)s",
-            "datefmt": "%Y-%m-%dT%H:%M:%S%Z"
+            "datefmt": "%Y-%m-%dT%H:%M:%S%z"
         },
         "color": {
             "()": "tealogger.tealogger.ColorFormatter",
             "record_format": "[%(levelname)s %(name)s %(asctime)s] %(message)s",
-            "date_format": "%Y-%m-%dT%H:%M:%S%Z"
+            "date_format": "%Y-%m-%dT%H:%M:%S%z"
         }
     },
     "filters": {},
