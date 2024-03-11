@@ -9,7 +9,7 @@ import json
 import logging
 import logging.config
 from pathlib import Path
-from typing import (override, Self, Union)
+from typing import Self, Union
 
 
 # Log Level
@@ -120,7 +120,6 @@ class ColorFormatter(logging.Formatter):
 
         self._date_format = date_format
 
-    @override
     def format(
         self,
         record: logging.LogRecord
