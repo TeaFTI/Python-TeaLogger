@@ -5,13 +5,22 @@ Test Tea Logger Package
 This module test functionality for the Tea Logger Package.
 """
 
+import pytest
+
 import tealogger
 
 class TestTeaLoggerPackage:
     """Test Tea Logger Package"""
 
+    @pytest.mark.parametrize(
+        'attribute',
+        [
+            ('setLevel'),
+        ]
+    )
     def test_base_import(
         self,
+        attribute: str,
     ):
         """Test Base Construction"""
 
@@ -21,9 +30,18 @@ class TestTeaLoggerPackage:
         tealogger.error('TeaLogger: Error Message')
         tealogger.critical('TeaLogger: Critical Message')
 
+        assert hasattr(tealogger, attribute)
 
+
+    @pytest.mark.parametrize(
+        'attribute',
+        [
+            ('log'),
+        ]
+    )
     def test_debug_log(
         self,
+        attribute: str,
     ):
         """Test Debug Log"""
 
@@ -35,3 +53,5 @@ class TestTeaLoggerPackage:
         tealogger.warning('TeaLogger: Warning Message')
         tealogger.error('TeaLogger: Error Message')
         tealogger.critical('TeaLogger: Critical Message')
+
+        assert hasattr(tealogger, attribute)
