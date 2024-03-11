@@ -57,7 +57,7 @@
             ]
         },
         "tealogger": {
-            "level": "DEBUG",
+            "level": "WARNING",
             "propagate": false,
             "filters": [],
             "handlers": [
