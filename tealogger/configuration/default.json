@@ -24,6 +24,13 @@
             "filters": [],
             "stream": "ext://sys.stdout"
         },
+        "console": {
+            "class": "logging.StreamHandler",
+            "level": "DEBUG",
+            "formatter": "color",
+            "filters": [],
+            "stream": "ext://sys.stdout"
+        },
         "stdout": {
             "class": "logging.StreamHandler",
             "level": "DEBUG",
@@ -53,7 +60,7 @@
             "propagate": false,
             "filters": [],
             "handlers": [
-                "stdout"
+                "console"
             ]
         }
     },
