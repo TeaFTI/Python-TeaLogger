@@ -18,11 +18,11 @@ class TestTeaLoggerPackage:
             ('setLevel'),
         ]
     )
-    def test_base_import(
+    def test_tealogger_import(
         self,
         attribute: str,
     ):
-        """Test Base Construction"""
+        """Test tealogger Construction"""
 
         tealogger.debug('TeaLogger: Debug Message')
         tealogger.info('TeaLogger: Info Message')
