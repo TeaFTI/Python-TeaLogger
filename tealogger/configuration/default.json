@@ -15,7 +15,11 @@
             "date_format": "%Y-%m-%dT%H:%M:%S%z"
         }
     },
-    "filters": {},
+    "filters": {
+        "stdout": {
+            "()" : "tealogger.tealogger.StandardOutFilter"
+        }
+    },
     "handlers": {
         "default": {
             "class": "logging.StreamHandler",
@@ -35,7 +39,9 @@
             "class": "logging.StreamHandler",
             "level": "DEBUG",
             "formatter": "color",
-            "filters": [],
+            "filters": [
+                "stdout"
+            ],
             "stream": "ext://sys.stdout"
         },
         "stderr": {
@@ -52,6 +58,7 @@
             "propagate": false,
             "filters": [],
             "handlers": [
+                "stderr",
                 "stdout"
             ]
         },
