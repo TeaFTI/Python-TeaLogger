@@ -27,6 +27,7 @@ class TestTeaLoggerModule:
         name: Union[str, None],
         level: Union[int, str],
         expected,
+        capsys,
     ):
         """Test Base Construction"""
 
@@ -40,5 +41,7 @@ class TestTeaLoggerModule:
         base.warning('TeaLogger: Warning Message')
         base.error('TeaLogger: Error Message')
         base.critical('TeaLogger: Critical Message')
+
+        print(capsys.readouterr())
 
         assert isinstance(base, expected)
