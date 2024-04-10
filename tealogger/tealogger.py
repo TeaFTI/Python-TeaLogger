@@ -140,6 +140,28 @@ class ColorFormatter(logging.Formatter):
         return formatter.format(record)
 
 
+class StandardSteamHandler(logging.StreamHandler):
+    """Standard Steam Handler"""
+
+
+class StandardOutFilter(logging.Filter):
+    """Standard Out Filter"""
+
+    def filter(self, record: logging.LogRecord) -> bool:
+        """Filter the specified record
+
+        Determine if the specified record is to be logged.
+
+        :param record: The record to filter
+        :type record: dict
+
+        :return: Whether or not the record should be logged
+        :rtype: bool
+        """
+
+        return record.levelno <= WARNING
+
+
 class TeaLogger(logging.Logger):
     """Tea Logger
     """
