@@ -22,37 +22,39 @@ INFO = logging.INFO
 DEBUG = logging.DEBUG
 NOTSET = logging.NOTSET
 
+ESC = '\x1b['
+
 _COLOR_CODE = {
     # Reset
-    'RESET': '\x1b[0m',
+    'RESET': f'{ESC}0m',
     # Foreground
-    'FOREGROUND_BLACK': '\x1b[30m',
-    'FOREGROUND_RED': '\x1b[31m',
-    'FOREGROUND_GREEN': '\x1b[32m',
-    'FOREGROUND_YELLOW': '\x1b[33m',
-    'FOREGROUND_BLUE': '\x1b[34m',
-    'FOREGROUND_MAGENTA': '\x1b[35m',
-    'FOREGROUND_CYAN': '\x1b[36m',
-    'FOREGROUND_WHITE': '\x1b[37m',
-    'FOREGROUND_DEFAULT': '\x1b[39m',
+    'FOREGROUND_BLACK': f'{ESC}30m',
+    'FOREGROUND_RED': f'{ESC}31m',
+    'FOREGROUND_GREEN': f'{ESC}32m',
+    'FOREGROUND_YELLOW': f'{ESC}33m',
+    'FOREGROUND_BLUE': f'{ESC}34m',
+    'FOREGROUND_MAGENTA': f'{ESC}35m',
+    'FOREGROUND_CYAN': f'{ESC}36m',
+    'FOREGROUND_WHITE': f'{ESC}37m',
+    'FOREGROUND_DEFAULT': f'{ESC}39m',
     # Background
-    'BACKGROUND_BLACK': '\x1b[40m',
-    'BACKGROUND_RED': '\x1b[41m',
-    'BACKGROUND_GREEN': '\x1b[42m',
-    'BACKGROUND_YELLOW': '\x1b[43m',
-    'BACKGROUND_BLUE': '\x1b[44m',
-    'BACKGROUND_MAGENTA': '\x1b[45m',
-    'BACKGROUND_CYAN': '\x1b[46m',
-    'BACKGROUND_WHITE': '\x1b[47m',
-    'BACKGROUND_DEFAULT': '\x1b[49m',
+    'BACKGROUND_BLACK': f'{ESC}40m',
+    'BACKGROUND_RED': f'{ESC}41m',
+    'BACKGROUND_GREEN': f'{ESC}42m',
+    'BACKGROUND_YELLOW': f'{ESC}43m',
+    'BACKGROUND_BLUE': f'{ESC}44m',
+    'BACKGROUND_MAGENTA': f'{ESC}45m',
+    'BACKGROUND_CYAN': f'{ESC}46m',
+    'BACKGROUND_WHITE': f'{ESC}47m',
+    'BACKGROUND_DEFAULT': f'{ESC}49m',
     # Style
-    'STYLE_BOLD': '\x1b[1m',
-    'STYLE_DIM': '\x1b[2m',
-    'STYLE_UNDERLINED': '\x1b[4m',
-    'STYLE_BLINK': '\x1b[5m',
-    'STYLE_REVERSE': '\x1b[7m',
-    'STYLE_HIDDEN': '\x1b[8m',
-    'STYLE_DEFAULT': '\x1b[22m',
+    'STYLE_BOLD': f'{ESC}1m',
+    'STYLE_DIM': f'{ESC}2m',
+    'STYLE_UNDERLINED': f'{ESC}4m',
+    'STYLE_BLINK': f'{ESC}5m',
+    'STYLE_REVERSE': f'{ESC}7m',
+    'STYLE_HIDDEN': f'{ESC}8m',
+    'STYLE_DEFAULT': f'{ESC}22m',
 }
 
 _LEVEL_COLOR_CODE = {
@@ -165,8 +167,7 @@ class StandardOutFilter(logging.Filter):
 
 
 class TeaLogger(logging.Logger):
-    """Tea Logger
-    """
+    """Tea Logger"""
 
     def __new__(
         cls,
@@ -231,7 +232,7 @@ class TeaLogger(logging.Logger):
     def __init__(
         self,
         name: str,
-        level: Union[int, str] = NOTSET,
+        level: Union[int, str] = NOTSET
     ) -> None:
         """Initialize Constructor
 
