@@ -135,7 +135,9 @@ class ColorFormatter(logging.Formatter):
         """
         log_format = self._level_format.get(record.levelno)
         formatter = logging.Formatter(
-            fmt=log_format, datefmt=self._date_format)
+            fmt=log_format,
+            datefmt=self._date_format
+        )
 
         return formatter.format(record)
 
