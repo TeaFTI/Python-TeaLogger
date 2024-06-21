@@ -28,6 +28,9 @@ dynamic = [
 [tool.distutils.bdist_wheel]
 universal = true
 
+[tool.ruff.format]
+quote-style = "single"
+
 [tool.setuptools]
 packages = [
     "tealogger"
