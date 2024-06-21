@@ -12,11 +12,11 @@ from tealogger.tealogger import (
 )
 
 from tealogger.tealogger import (
-    DEBUG,
-    INFO,
+    # DEBUG,
+    # INFO,
     WARNING,
-    ERROR,
-    CRITICAL,
+    # ERROR,
+    # CRITICAL,
     NOTSET
 )
 
