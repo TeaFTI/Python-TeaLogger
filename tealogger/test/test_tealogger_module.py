@@ -20,6 +20,7 @@ class TestTeaLoggerModule:
         [
             (None, tealogger.DEBUG, logging.Logger),
             ('base', tealogger.DEBUG, logging.Logger),
+            ('tea', tealogger.DEBUG, logging.Logger),
         ]
     )
     def test_base_construction(
@@ -27,7 +28,7 @@ class TestTeaLoggerModule:
         name: Union[str, None],
         level: Union[int, str],
         expected,
-        capsys,
+        # capsys,
     ):
         """Test Base Construction"""
 
@@ -42,6 +43,7 @@ class TestTeaLoggerModule:
         base.error('TeaLogger: Error Message')
         base.critical('TeaLogger: Critical Message')
 
-        print(capsys.readouterr())
+        # Capture Output (Does Not Print)
+        # print(capsys.readouterr())
 
         assert isinstance(base, expected)

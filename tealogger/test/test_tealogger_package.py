@@ -15,6 +15,7 @@ class TestTeaLoggerPackage:
     @pytest.mark.parametrize(
         'attribute',
         [
+            ('log'),
             ('setLevel'),
         ]
     )
@@ -37,6 +38,7 @@ class TestTeaLoggerPackage:
         'attribute',
         [
             ('log'),
+            ('setLevel'),
         ]
     )
     def test_debug_log(
