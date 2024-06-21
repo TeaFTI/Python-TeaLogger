@@ -7,19 +7,24 @@ Tea Logger is a simple logging package for Python.
 
 from typing import Union
 
-from tealogger.tealogger import (
+from .tealogger import (
+    DEBUG,
+    INFO,
+    WARNING,
+    ERROR,
+    CRITICAL,
+    NOTSET,
     TeaLogger
 )
 
-from tealogger.tealogger import (
-    # DEBUG,
-    # INFO,
-    WARNING,
-    # ERROR,
-    # CRITICAL,
-    NOTSET
-)
 
+# Log Level
+CRITICAL = CRITICAL
+ERROR = ERROR
+WARNING = WARNING
+INFO = INFO
+DEBUG = DEBUG
+NOTSET = NOTSET
 
 tea = TeaLogger(
     name=__name__,
