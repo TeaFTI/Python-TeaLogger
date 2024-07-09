@@ -9,16 +9,10 @@ import pytest
 
 import tealogger
 
+
 class TestTeaLoggerPackage:
     """Test Tea Logger Package"""
 
-    @pytest.mark.parametrize(
-        'attribute',
-        [
-            ('log'),
-            ('setLevel'),
-        ]
-    )
     def test_tealogger_import(
         self,
         attribute: str,
@@ -33,14 +27,6 @@ class TestTeaLoggerPackage:
 
         assert hasattr(tealogger, attribute)
 
-
-    @pytest.mark.parametrize(
-        'attribute',
-        [
-            ('log'),
-            ('setLevel'),
-        ]
-    )
     def test_debug_log(
         self,
         attribute: str,
