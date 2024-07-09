@@ -5,12 +5,16 @@ Configure Test
 This module implement test configuration for Tea Logger.
 """
 
+from itertools import product
+import json
+from pathlib import Path
 from typing import Union
 
 import pytest
 from pytest import (
     Config,
     ExitCode,
+    Metafunc,
     Parser,
     PytestPluginManager,
     Session
@@ -22,7 +26,7 @@ import tealogger
 tealogger.set_level(tealogger.DEBUG)
 
 
-def pytest_generate_tests(metafunc: pytest.Metafunc):
+def pytest_generate_tests(metafunc: Metafunc):
     """Generate Test Hook
 
     Dynamically parametrize test(s) using test data from a JSON
@@ -31,12 +35,18 @@ def pytest_generate_tests(metafunc: pytest.Metafunc):
 
     Example:
         {
-            "ClassName": {
-                "function_name": {
-                    "parameter": [
-                        "expression"
-                    ]
-                }
+            "module_name":
+                "ClassName": {
+                    "function_name": {
+                        "parameter": [
+                            "expression",
+                            ...
+                        ],
+                        ...
+                    },
+                    ...
+                },
+                ...
             },
             ...
         }
@@ -44,6 +54,52 @@ def pytest_generate_tests(metafunc: pytest.Metafunc):
     :param metafunc: Objects passed to the pytest_generate_tests hook
     :type metafunc: pytest.Metafunc
     """
+    tealogger.info('pytest Generate Test')
+    tealogger.debug('Metafunc: %s', metafunc)
+    tealogger.debug(f'Module Name: {metafunc.module.__name__}')
+    tealogger.debug(f'Class Name: {metafunc.cls.__name__}')
+    tealogger.debug(f'Function Name: {metafunc.function.__name__}')
+    tealogger.debug(f'Fixture Names: {metafunc.fixturenames}')
+
+    # Load the test data
+    with open(Path(__file__).parent / 'data.json', 'r', encoding='utf-8') as file:
+        data = json.load(file)
+
+    # Parse metafunc name
+    module_name = metafunc.module.__name__.split('.')[-1]
+    class_name = metafunc.cls.__name__
+    function_name = metafunc.function.__name__
+
+    # Module Level
+    if module_name in data:
+        tealogger.debug('Generate Module Test')
+        test_data = data[module_name][class_name][function_name]['data']
+        tealogger.debug('Test Data: %s', test_data)
+
+        argument_name_list = test_data.keys()
+        argument_value_list = test_data.values()
+
+        product_value_list = product(*argument_value_list)
+
+        # argument_name_list = list(argument_name_list)
+        # product_value_list = list(product_value_list)
+
+        tealogger.debug('Argument Name List: %s', argument_name_list)
+        tealogger.debug('Argument Value List: %s', argument_value_list)
+        tealogger.debug('Product Value List: %s', product_value_list)
+
+    # Class Level
+    elif class_name in data:
+        tealogger.debug('Generate Class Test')
+
+    # Function Level
+    elif function_name in data:
+        tealogger.debug('Generate Function Test')
+
+    metafunc.parametrize(
+        argnames=argument_name_list,
+        argvalues=product_value_list,
+    )
 
 
 def pytest_addoption(parser: Parser, pluginmanager: PytestPluginManager):
