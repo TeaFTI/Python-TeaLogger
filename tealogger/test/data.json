@@ -1,0 +1,34 @@
+{
+    "test_tealogger_package": {
+        "TestTeaLoggerPackage": {
+            "test_tealogger_import": {
+                "data": {
+                    "attribute": [
+                        "log",
+                        "setLevel",
+                        "set_level",
+                        "debug",
+                        "info",
+                        "warning",
+                        "error",
+                        "critical"
+                    ]
+                }
+            },
+            "test_debug_log": {
+                "data": {
+                    "attribute": [
+                        "log",
+                        "setLevel",
+                        "set_level",
+                        "debug",
+                        "info",
+                        "warning",
+                        "error",
+                        "critical"
+                    ]
+                }
+            }
+        }
+    }
+}
