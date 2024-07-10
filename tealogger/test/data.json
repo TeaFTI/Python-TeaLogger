@@ -2,6 +2,7 @@
     "test_tealogger_package": {
         "TestTeaLoggerPackage": {
             "test_tealogger_import": {
+                "product": true,
                 "data": {
                     "attribute": [
                         "log",
