@@ -89,6 +89,12 @@ def pytest_generate_tests(metafunc: Metafunc):
         tealogger.debug('Argument Value List: %s', argument_value_list)
         tealogger.debug('Product Value List: %s', product_value_list)
 
+        # Parametrize the test(s), only if test_data is available
+        metafunc.parametrize(
+            argnames=argument_name_list,
+            argvalues=product_value_list,
+        )
+
     # Class Level
     elif class_name in data:
         tealogger.debug('Generate Class Test')
@@ -96,11 +102,6 @@ def pytest_generate_tests(metafunc: Metafunc):
     # Function Level
     elif function_name in data:
         tealogger.debug('Generate Function Test')
-
-    metafunc.parametrize(
-        argnames=argument_name_list,
-        argvalues=product_value_list,
-    )
 
 
 def pytest_addoption(parser: Parser, pluginmanager: PytestPluginManager):

@@ -5,26 +5,106 @@ Tea Logger Package
 Tea Logger is a simple logging package for Python.
 """
 
+import json
+import logging
+import logging.config
+from pathlib import Path
 from typing import Union
-
-from .tealogger import (
-    DEBUG,
-    INFO,
-    WARNING,
-    ERROR,
-    CRITICAL,
-    NOTSET,
-    TeaLogger
-)
 
 
 # Log Level
-CRITICAL = CRITICAL
-ERROR = ERROR
-WARNING = WARNING
-INFO = INFO
-DEBUG = DEBUG
-NOTSET = NOTSET
+CRITICAL = logging.CRITICAL
+FATAL = logging.FATAL
+ERROR = logging.ERROR
+WARNING = logging.WARNING
+WARN = logging.WARN
+INFO = logging.INFO
+DEBUG = logging.DEBUG
+NOTSET = logging.NOTSET
+
+
+class TeaLogger(logging.Logger):
+    """Tea Logger"""
+
+    def __new__(
+        cls,
+        name: Union[str, None] = None,
+        level: Union[int, str] = NOTSET,
+        **kwargs
+    ):
+        """Create Constructor
+
+        Create new instance of the TeaLogger class.
+
+        :param name: The name for the TeaLogger, defaults to None
+        :type name: str or None, optional
+        :param level: The level for the TeaLogger, defaults to NOTSET
+        :type level: int or str, optional
+        :param dictConfig: The dictionary configuration for the
+            TeaLogger, defaults to None
+        :type dictConfig: dict, optional
+        :param fileConfig: The file configuration for the TeaLogger,
+            defaults to None
+        :type fileConfig: str, optional
+
+        :return: The new instance of TeaLogger class (Self)
+        :rtype: TeaLogger
+        """
+
+        # Get (Create) the Logger
+        tea = logging.getLogger(name)
+
+        # Configuration
+        if kwargs.get('dictConfig'):
+            # Dictionary
+            logging.config.dictConfig(kwargs.get('dictConfig'))
+        elif kwargs.get('fileConfig'):
+            # File
+            ...
+        else:
+            # Default
+            current_module_path = Path(__file__).parent.expanduser().resolve()
+            with open(
+                current_module_path / 'configuration' / 'default.json',
+                mode='r',
+                encoding='utf-8'
+            ) as file:
+                configuration = json.load(file)
+
+            if 'loggers' not in configuration:
+                configuration['loggers'] = {}
+            elif name not in configuration['loggers']:
+                configuration['loggers'][name] = {}
+
+            # NOTE: Override only individual configuration!
+            # Overriding the entire configuration will cause this child
+            # logger to inherit any missing configuration from the root
+            # logger. (Even if the configuration was set previously.)
+            configuration['loggers'][name]['level'] = logging.getLevelName(level)
+
+            logging.config.dictConfig(configuration)
+
+        return tea
+
+    def __init__(
+        self,
+        name: str,
+        level: Union[int, str] = NOTSET
+    ) -> None:
+        """Initialize Constructor
+
+        Initialize the instance of the TeaLogger class.
+
+        :param name: The name for the TeaLogger
+        :type name: str
+        :param level: The level for the TeaLogger, defaults to NOTSET
+        :type level: int or str, optional
+        :return: The new instance of TeaLogger class (Self)
+        :rtype: TeaLogger
+        """
+        # Call super class
+        super().__init__(name=name, level=level)
+
 
 tea = TeaLogger(
     name=__name__,
