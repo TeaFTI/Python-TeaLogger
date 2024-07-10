@@ -5,8 +5,6 @@ Test Tea Logger Package
 This module test functionality for the Tea Logger Package.
 """
 
-import pytest
-
 import tealogger
 
 
