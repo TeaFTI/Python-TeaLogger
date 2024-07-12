@@ -80,8 +80,7 @@ class TeaLogger(logging.Logger):
             # Overriding the entire configuration will cause this child
             # logger to inherit any missing configuration from the root
             # logger. (Even if the configuration was set previously.)
-            configuration['loggers'][name]['level'] = logging.getLevelName(
-                level)
+            configuration['loggers'][name]['level'] = logging.getLevelName(level)
 
             logging.config.dictConfig(configuration)
 
