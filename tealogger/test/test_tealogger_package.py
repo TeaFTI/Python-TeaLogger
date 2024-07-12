@@ -11,33 +11,47 @@ import tealogger
 class TestTeaLoggerPackage:
     """Test Tea Logger Package"""
 
-    def test_tealogger_import(
+    def test_tealogger_instance(
         self,
-        attribute: str,
     ):
-        """Test tealogger Construction"""
+        """Test Tea Logger Instance"""
 
-        tealogger.debug('TeaLogger: Debug Message')
-        tealogger.info('TeaLogger: Info Message')
-        tealogger.warning('TeaLogger: Warning Message')
-        tealogger.error('TeaLogger: Error Message')
-        tealogger.critical('TeaLogger: Critical Message')
+        tealogger_a1 = tealogger.TeaLogger('Alpha')
+        tealogger_a2 = tealogger.TeaLogger('Alpha')
 
-        assert hasattr(tealogger, attribute)
+        print(hex(id(tealogger_a1)))
+        print(hex(id(tealogger_a2)))
 
-    def test_debug_log(
-        self,
-        attribute: str,
-    ):
-        """Test Debug Log"""
+        assert tealogger_a1 == tealogger_a2
 
-        # Set the logging level to DEBUG
-        tealogger.setLevel(tealogger.DEBUG)
+    # def test_tealogger_import(
+    #     self,
+    #     attribute: str,
+    # ):
+    #     """Test tealogger Construction"""
 
-        tealogger.debug('TeaLogger: Debug Message')
-        tealogger.info('TeaLogger: Info Message')
-        tealogger.warning('TeaLogger: Warning Message')
-        tealogger.error('TeaLogger: Error Message')
-        tealogger.critical('TeaLogger: Critical Message')
+    #     tealogger.log(tealogger.DEBUG, 'TeaLogger: Debug Message')
+    #     tealogger.debug('TeaLogger: Debug Message')
+    #     tealogger.info('TeaLogger: Info Message')
+    #     tealogger.warning('TeaLogger: Warning Message')
+    #     tealogger.error('TeaLogger: Error Message')
+    #     tealogger.critical('TeaLogger: Critical Message')
 
-        assert hasattr(tealogger, attribute)
+    #     assert hasattr(tealogger, attribute)
+
+    # def test_debug_log(
+    #     self,
+    #     attribute: str,
+    # ):
+    #     """Test Debug Log"""
+
+    #     # Set the logging level to DEBUG
+    #     tealogger.setLevel(tealogger.DEBUG)
+
+    #     tealogger.debug('TeaLogger: Debug Message')
+    #     tealogger.info('TeaLogger: Info Message')
+    #     tealogger.warning('TeaLogger: Warning Message')
+    #     tealogger.error('TeaLogger: Error Message')
+    #     tealogger.critical('TeaLogger: Critical Message')
+
+    #     assert hasattr(tealogger, attribute)

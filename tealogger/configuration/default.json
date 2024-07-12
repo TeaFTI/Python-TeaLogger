@@ -63,7 +63,7 @@
             ]
         },
         "tealogger": {
-            "level": "WARNING",
+            "level": "INFO",
             "propagate": false,
             "filters": [],
             "handlers": [
@@ -73,12 +73,11 @@
     },
     "root": {
         "level": "WARNING",
-        "propagate": false,
         "filters": [],
         "handlers": [
             "default"
         ]
     },
-    "incremental": "",
+    "incremental": false,
     "disable_existing_loggers": false
 }
