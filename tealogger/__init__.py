@@ -80,7 +80,8 @@ class TeaLogger(logging.Logger):
             # Overriding the entire configuration will cause this child
             # logger to inherit any missing configuration from the root
             # logger. (Even if the configuration was set previously.)
-            configuration['loggers'][name]['level'] = logging.getLevelName(level)
+            configuration['loggers'][name]['level'] = logging.getLevelName(
+                level)
 
             logging.config.dictConfig(configuration)
 
@@ -103,12 +104,24 @@ class TeaLogger(logging.Logger):
         :rtype: TeaLogger
         """
         # Call super class
-        super().__init__(name=name, level=level)
+        super().__init__(self, name=name, level=level)
+        # logging.Logger.__init__(self, name=name, level=level)
+
+    # def set_level(
+    #     self,
+    #     level: Union[int, str] = NOTSET,
+    # ):
+    #     """Set the logging level of the Tea Logger (Class).
+
+    #     :param level: The level for the TeaLogger, defaults to NOTSET
+    #     :type level: int or str, optional
+    #     """
+    #     self.setLevel(level)
 
 
 tea = TeaLogger(
     name=__name__,
-    level=WARNING
+    # level=WARNING
 )
 
 
@@ -128,7 +141,7 @@ setLevel = set_level
 
 
 def log(
-    level,
+    level: int,
     message: str,
     *args,
     **kwargs
