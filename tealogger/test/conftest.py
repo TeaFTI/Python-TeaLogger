@@ -22,9 +22,10 @@ from pytest import (
 
 import tealogger
 
-
-tealogger.set_level(tealogger.DEBUG)
-
+# Configure conftest_logger
+# conftest_logger = tealogger.TeaLogger(__name__)
+# conftest_logger.propagate = False
+# conftest_logger.setLevel(tealogger.DEBUG)
 
 def pytest_generate_tests(metafunc: Metafunc):
     """Generate Test Hook
@@ -71,7 +72,11 @@ def pytest_generate_tests(metafunc: Metafunc):
     function_name = metafunc.function.__name__
 
     # Module Level
-    if module_name in data:
+    if (
+        module_name in data
+        and class_name in data[module_name]
+        and function_name in data[module_name][class_name]
+    ):
         tealogger.debug('Generate Module Test')
         test_data = data[module_name][class_name][function_name]['data']
         tealogger.debug('Test Data: %s', test_data)
