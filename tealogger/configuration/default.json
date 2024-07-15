@@ -63,7 +63,7 @@
             ]
         },
         "tealogger": {
-            "level": "INFO",
+            "level": "WARNING",
             "propagate": false,
             "filters": [],
             "handlers": [
