@@ -120,7 +120,7 @@ class TeaLogger(logging.Logger):
 
 tea = TeaLogger(
     name=__name__,
-    # level=WARNING
+    level=WARNING
 )
 
 
