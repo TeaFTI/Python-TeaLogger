@@ -23,4 +23,5 @@ class StandardOutFilter(logging.Filter):
         :rtype: bool
         """
 
+        # Log record(s) with a level of WARNING or lower
         return record.levelno <= logging.WARNING
