@@ -10,16 +10,16 @@ Python Tea Logger
 
 ### Level
 
-From low (`DEBUG`) to high (`CRITICAL`).
+From high (`CRITICAL`) to low (`DEBUG`).
 
-* `DEBUG`
-* `INFO`
-* `WARNING`
-* `WARN`: Deprecated, use `WARNING` instead
-* `ERROR`
-* `CRITICAL`
-* `FATAL`: Do not use, use `CRITICAL` instead
-* `NOTSET`
+* `CRITICAL` = 50
+* `FATAL` = `CRITICAL` (Do not use, use `CRITICAL` instead)
+* `ERROR` = 40
+* `WARNING` = 30
+* `WARN` = `WARNING` (Deprecated, use `WARNING` instead)
+* `INFO` = 20
+* `DEBUG` = 10
+* `NOTSET` = 0
 * `EXCEPTION`
 
 ## Note
