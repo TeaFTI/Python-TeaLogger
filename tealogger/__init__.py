@@ -23,6 +23,17 @@ DEBUG = logging.DEBUG
 NOTSET = logging.NOTSET
 
 
+# Default
+DEFAULT_CONFIGURATION = None
+CURRENT_MODULE_PATH = Path(__file__).parent.expanduser().resolve()
+with open(
+    CURRENT_MODULE_PATH / 'configuration' / 'default.json',
+    mode='r',
+    encoding='utf-8'
+) as file:
+    DEFAULT_CONFIGURATION = json.load(file)
+
+
 class TeaLogger(logging.Logger):
     """Tea Logger"""
 
@@ -51,9 +62,6 @@ class TeaLogger(logging.Logger):
         :rtype: TeaLogger
         """
 
-        # Get (Create) the Logger
-        tea = logging.getLogger(name)
-
         # Configuration
         if kwargs.get('dictConfig'):
             # Dictionary
@@ -63,26 +71,36 @@ class TeaLogger(logging.Logger):
             ...
         else:
             # Default
-            current_module_path = Path(__file__).parent.expanduser().resolve()
-            with open(
-                current_module_path / 'configuration' / 'default.json',
-                mode='r',
-                encoding='utf-8'
-            ) as file:
-                configuration = json.load(file)
+            # current_module_path = Path(__file__).parent.expanduser().resolve()
+            # with open(
+            #     current_module_path / 'configuration' / 'default.json',
+            #     mode='r',
+            #     encoding='utf-8'
+            # ) as file:
+            #     configuration = json.load(file)
 
-            if 'loggers' not in configuration:
-                configuration['loggers'] = {}
-            elif name not in configuration['loggers']:
-                configuration['loggers'][name] = {}
+            # if 'loggers' not in configuration:
+            #     configuration['loggers'] = {}
+            # if name not in configuration['loggers']:
+            #     # Configure new logger with default configuration
+            #     configuration['loggers'][name] = {
+            #         'propagate': kwargs.get('propagate', False),
+            #         'handlers': kwargs.get('handler_list', ['default'])
+            #     }
+
+            # configuration['loggers'][name]['handlers'] = kwargs.get('handler_list')
 
             # NOTE: Override only individual configuration!
             # Overriding the entire configuration will cause this child
             # logger to inherit any missing configuration from the root
             # logger. (Even if the configuration was set previously.)
-            configuration['loggers'][name]['level'] = logging.getLevelName(level)
+            # configuration['loggers'][name]['level'] = logging.getLevelName(level)
+            # configuration['loggers'][name]['level'] = level
 
-            logging.config.dictConfig(configuration)
+            logging.config.dictConfig(DEFAULT_CONFIGURATION)
+
+        # Get (Create) the Logger
+        tea = logging.getLogger(name)
 
         return tea
 
@@ -106,21 +124,10 @@ class TeaLogger(logging.Logger):
         super().__init__(self, name=name, level=level)
         # logging.Logger.__init__(self, name=name, level=level)
 
-    # def set_level(
-    #     self,
-    #     level: Union[int, str] = NOTSET,
-    # ):
-    #     """Set the logging level of the Tea Logger (Class).
-
-    #     :param level: The level for the TeaLogger, defaults to NOTSET
-    #     :type level: int or str, optional
-    #     """
-    #     self.setLevel(level)
-
 
 tea = TeaLogger(
     name=__name__,
-    level=WARNING
+    level=WARNING,
 )
 
 
