@@ -23,14 +23,12 @@
     "handlers": {
         "default": {
             "class": "logging.StreamHandler",
-            "level": "WARNING",
             "formatter": "default",
             "filters": [],
             "stream": "ext://sys.stdout"
         },
         "console": {
             "class": "logging.StreamHandler",
-            "level": "DEBUG",
             "formatter": "color",
             "filters": [],
             "stream": "ext://sys.stdout"
