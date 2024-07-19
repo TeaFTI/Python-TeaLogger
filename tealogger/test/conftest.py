@@ -22,10 +22,6 @@ from pytest import (
 
 import tealogger
 
-# Configure conftest_logger
-conftest_logger = tealogger.TeaLogger(__name__)
-conftest_logger.propagate = False
-conftest_logger.setLevel(tealogger.DEBUG)
 
 def pytest_generate_tests(metafunc: Metafunc):
     """Generate Test Hook
