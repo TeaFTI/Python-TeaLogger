@@ -22,6 +22,9 @@ from pytest import (
 
 import tealogger
 
+# Configure conftest_logger
+conftest_logger = tealogger.TeaLogger(name=__name__)
+conftest_logger.setLevel(tealogger.DEBUG)
 
 def pytest_generate_tests(metafunc: Metafunc):
     """Generate Test Hook
@@ -51,7 +54,7 @@ def pytest_generate_tests(metafunc: Metafunc):
     :param metafunc: Objects passed to the pytest_generate_tests hook
     :type metafunc: pytest.Metafunc
     """
-    tealogger.info('pytest Generate Test')
+    conftest_logger.info('pytest Generate Test')
     tealogger.debug('Metafunc: %s', metafunc)
     tealogger.debug(f'Module Name: {metafunc.module.__name__}')
     tealogger.debug(f'Class Name: {metafunc.cls.__name__}')
