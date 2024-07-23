@@ -11,18 +11,18 @@ import tealogger
 class TestTeaLoggerPackage:
     """Test Tea Logger Package"""
 
-    # def test_tealogger_instance(
-    #     self,
-    # ):
-    #     """Test Tea Logger Instance"""
+    def test_tealogger_instance(
+        self,
+    ):
+        """Test tealogger Instance"""
 
-    #     tealogger_a1 = tealogger.TeaLogger('Alpha')
-    #     tealogger_a2 = tealogger.TeaLogger('Alpha')
+        tealogger_first = tealogger.TeaLogger('alpha')
+        tealogger_second = tealogger.TeaLogger('alpha')
 
-    #     print(hex(id(tealogger_a1)))
-    #     print(hex(id(tealogger_a2)))
+        print(hex(id(tealogger_first)))
+        print(hex(id(tealogger_second)))
 
-    #     assert tealogger_a1 == tealogger_a2
+        assert tealogger_first == tealogger_second
 
     def test_tealogger_import(
         self,
