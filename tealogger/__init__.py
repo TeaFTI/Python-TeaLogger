@@ -79,14 +79,14 @@ class TeaLogger(logging.Logger):
             # ) as file:
             #     configuration = json.load(file)
 
-            # if 'loggers' not in configuration:
-            #     configuration['loggers'] = {}
-            # if name not in configuration['loggers']:
-            #     # Configure new logger with default configuration
-            #     configuration['loggers'][name] = {
-            #         'propagate': kwargs.get('propagate', False),
-            #         'handlers': kwargs.get('handler_list', ['default'])
-            #     }
+            if 'loggers' not in DEFAULT_CONFIGURATION:
+                DEFAULT_CONFIGURATION['loggers'] = {}
+            if name not in DEFAULT_CONFIGURATION['loggers']:
+                # Configure new logger with default configuration
+                DEFAULT_CONFIGURATION['loggers'][name] = {
+                    'propagate': kwargs.get('propagate', False),
+                    'handlers': kwargs.get('handler_list', ['default'])
+                }
 
             # configuration['loggers'][name]['handlers'] = kwargs.get('handler_list')
 
@@ -94,7 +94,7 @@ class TeaLogger(logging.Logger):
             # Overriding the entire configuration will cause this child
             # logger to inherit any missing configuration from the root
             # logger. (Even if the configuration was set previously.)
-            # configuration['loggers'][name]['level'] = logging.getLevelName(level)
+            DEFAULT_CONFIGURATION['loggers'][name]['level'] = logging.getLevelName(level)
             # configuration['loggers'][name]['level'] = level
 
             logging.config.dictConfig(DEFAULT_CONFIGURATION)
