@@ -13,16 +13,26 @@ class TestTeaLoggerPackage:
 
     def test_tealogger_instance(
         self,
+        set_name: str,
+        get_name: str,
     ):
-        """Test tealogger Instance"""
+        """Test tealogger Instance
+        """
 
-        tealogger_first = tealogger.TeaLogger('alpha')
-        tealogger_second = tealogger.TeaLogger('alpha')
+        tealogger_set = tealogger.TeaLogger(set_name)
+        tealogger_get = tealogger.TeaLogger(get_name)
 
-        print(hex(id(tealogger_first)))
-        print(hex(id(tealogger_second)))
+        tealogger_set_id = hex(id(tealogger_set))
+        tealogger_get_id = hex(id(tealogger_get))
 
-        assert tealogger_first == tealogger_second
+        tealogger.debug('TeaLogger First Hex ID: %s', tealogger_set_id)
+        tealogger.debug('TeaLogger Second Hex ID: %s', tealogger_get_id)
+
+        # Standard compare
+        assert tealogger_set == tealogger_get
+        # Identity compare
+        assert tealogger_set is tealogger_get
+
 
     def test_tealogger_import(
         self,

@@ -1,6 +1,19 @@
 {
     "test_tealogger_package": {
         "TestTeaLoggerPackage": {
+            "test_tealogger_instance": {
+                "product": false,
+                "data": {
+                    "set_name": [
+                        "alpha",
+                        "beta"
+                    ],
+                    "get_name": [
+                        "alpha",
+                        "beta"
+                    ]
+                }
+            },
             "test_tealogger_import": {
                 "product": true,
                 "data": {
