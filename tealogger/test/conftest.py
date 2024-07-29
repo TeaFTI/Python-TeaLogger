@@ -83,8 +83,13 @@ def pytest_generate_tests(metafunc: Metafunc):
         argument_name_list = test_data.keys()
         argument_value_list = test_data.values()
 
-        # Create the cartesian product of the argument value to test
-        product_value_list = product(*argument_value_list)
+        is_product = data[module_name][class_name][function_name]['product']
+        if is_product:
+            # Create the cartesian product of the argument value to test
+            product_value_list = product(*argument_value_list)
+        else:
+            # Create a zip of the argument value to test
+            product_value_list = zip(*argument_value_list)
 
         # argument_name_list = list(argument_name_list)
         # product_value_list = list(product_value_list)
