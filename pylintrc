@@ -1,8 +1,0 @@
-[MAIN]
-
-# Minimum supported Python version
-py-version = 3.7.0
-
-[MESSAGES CONTROL]
-disable=
-#    logging-fstring-interpolation,
