@@ -24,7 +24,7 @@ import tealogger
 
 # Configure conftest_logger
 conftest_logger = tealogger.TeaLogger(name=__name__)
-conftest_logger.setLevel(tealogger.DEBUG)
+# conftest_logger = tealogger.get_logger(name=__name__)
 
 def pytest_generate_tests(metafunc: Metafunc):
     """Generate Test Hook
@@ -61,14 +61,14 @@ def pytest_generate_tests(metafunc: Metafunc):
     tealogger.debug(f'Function Name: {metafunc.function.__name__}')
     tealogger.debug(f'Fixture Names: {metafunc.fixturenames}')
 
-    # Load the test data
-    with open(Path(__file__).parent / 'data.json', 'r', encoding='utf-8') as file:
-        data = json.load(file)
-
     # Parse metafunc name
     module_name = metafunc.module.__name__.split('.')[-1]
     class_name = metafunc.cls.__name__
     function_name = metafunc.function.__name__
+
+    # Load the test data
+    with open(Path(__file__).parent / 'data.json', 'r', encoding='utf-8') as file:
+        data = json.load(file)
 
     # Module Level
     if (
@@ -83,13 +83,15 @@ def pytest_generate_tests(metafunc: Metafunc):
         argument_name_list = test_data.keys()
         argument_value_list = test_data.values()
 
-        is_product = data[module_name][class_name][function_name]['product']
-        if is_product:
-            # Create the cartesian product of the argument value to test
-            product_value_list = product(*argument_value_list)
-        else:
-            # Create a zip of the argument value to test
-            product_value_list = zip(*argument_value_list)
+        strategy = data[module_name][class_name][function_name]['strategy']
+
+        match strategy:
+            case 'product':
+                # Create the cartesian product of the argument value to test
+                product_value_list = product(*argument_value_list)
+            case _:
+                # Create a zip of the argument value to test
+                product_value_list = zip(*argument_value_list)
 
         # argument_name_list = list(argument_name_list)
         # product_value_list = list(product_value_list)
