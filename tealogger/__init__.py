@@ -88,14 +88,14 @@ class TeaLogger(logging.Logger):
                     'handlers': kwargs.get('handler_list', ['default'])
                 }
 
-            # configuration['loggers'][name]['handlers'] = kwargs.get('handler_list')
+                # configuration['loggers'][name]['handlers'] = kwargs.get('handler_list')
 
-            # NOTE: Override only individual configuration!
-            # Overriding the entire configuration will cause this child
-            # logger to inherit any missing configuration from the root
-            # logger. (Even if the configuration was set previously.)
-            DEFAULT_CONFIGURATION['loggers'][name]['level'] = logging.getLevelName(level)
-            # configuration['loggers'][name]['level'] = level
+                # NOTE: Override only individual configuration!
+                # Overriding the entire configuration will cause this child
+                # logger to inherit any missing configuration from the root
+                # logger. (Even if the configuration was set previously.)
+                DEFAULT_CONFIGURATION['loggers'][name]['level'] = logging.getLevelName(level)
+                # configuration['loggers'][name]['level'] = level
 
             logging.config.dictConfig(DEFAULT_CONFIGURATION)
 
@@ -129,6 +129,24 @@ tea = TeaLogger(
     name=__name__,
     level=WARNING,
 )
+
+
+# def get_logger(
+#     name: str,
+# ):
+#     """Get the configured Tea Logger instance.
+
+#     :param name: The name for the configured TeaLogger
+#     :type name: str
+
+#     :return: The configured Tea Logger instance
+#     :rtype: TeaLogger
+#     """
+#     return logging.getLogger(name)
+
+
+# # Alias
+# getLogger = get_logger
 
 
 def set_level(
