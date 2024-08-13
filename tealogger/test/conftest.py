@@ -8,6 +8,7 @@ This module implement test configuration for Tea Logger.
 from itertools import product
 import json
 from pathlib import Path
+import platform
 from typing import Union
 
 import pytest
@@ -55,11 +56,11 @@ def pytest_generate_tests(metafunc: Metafunc):
     :type metafunc: pytest.Metafunc
     """
     conftest_logger.info('pytest Generate Test')
-    tealogger.debug('Metafunc: %s', metafunc)
-    tealogger.debug(f'Module Name: {metafunc.module.__name__}')
-    tealogger.debug(f'Class Name: {metafunc.cls.__name__}')
-    tealogger.debug(f'Function Name: {metafunc.function.__name__}')
-    tealogger.debug(f'Fixture Names: {metafunc.fixturenames}')
+    conftest_logger.debug(f'Metafunc: {metafunc}')
+    conftest_logger.debug(f'Module Name: {metafunc.module.__name__}')
+    conftest_logger.debug(f'Class Name: {metafunc.cls.__name__}')
+    conftest_logger.debug(f'Function Name: {metafunc.function.__name__}')
+    conftest_logger.debug(f'Fixture Names: {metafunc.fixturenames}')
 
     # Parse metafunc name
     module_name = metafunc.module.__name__.split('.')[-1]
@@ -67,8 +68,16 @@ def pytest_generate_tests(metafunc: Metafunc):
     function_name = metafunc.function.__name__
 
     # Load the test data
-    with open(Path(__file__).parent / 'data.json', 'r', encoding='utf-8') as file:
-        data = json.load(file)
+    if (Path(__file__).parent / f'{module_name}.json').exists():
+        test_data_path = Path(__file__).parent / f'{module_name}.json'
+    elif (Path(__file__).parent / 'data.json').exists():
+        test_data_path = Path(__file__).parent / 'data.json'
+
+    try:
+        with open(test_data_path, 'r', encoding='utf-8') as file:
+            data = json.load(file)
+    except FileNotFoundError as error:
+        conftest_logger.warning(f'No Test Data Found: {module_name}')
 
     # Module Level
     if (
@@ -76,9 +85,9 @@ def pytest_generate_tests(metafunc: Metafunc):
         and class_name in data[module_name]
         and function_name in data[module_name][class_name]
     ):
-        tealogger.debug('Generate Module Test')
+        conftest_logger.debug('Generate Module Test')
         test_data = data[module_name][class_name][function_name]['data']
-        tealogger.debug('Test Data: %s', test_data)
+        conftest_logger.debug(f'Test Data: {test_data}')
 
         argument_name_list = test_data.keys()
         argument_value_list = test_data.values()
@@ -96,9 +105,9 @@ def pytest_generate_tests(metafunc: Metafunc):
         # argument_name_list = list(argument_name_list)
         # product_value_list = list(product_value_list)
 
-        tealogger.debug('Argument Name List: %s', argument_name_list)
-        tealogger.debug('Argument Value List: %s', argument_value_list)
-        tealogger.debug('Product Value List: %s', product_value_list)
+        conftest_logger.debug(f'Argument Name List: {argument_name_list}')
+        conftest_logger.debug(f'Argument Value List: {argument_value_list}')
+        conftest_logger.debug(f'Product Value List: {product_value_list}')
 
         # Parametrize the test(s), only if test_data is available
         metafunc.parametrize(
@@ -108,11 +117,11 @@ def pytest_generate_tests(metafunc: Metafunc):
 
     # Class Level
     elif class_name in data:
-        tealogger.debug('Generate Class Test')
+        conftest_logger.debug('Generate Class Test')
 
     # Function Level
     elif function_name in data:
-        tealogger.debug('Generate Function Test')
+        conftest_logger.debug('Generate Function Test')
 
 
 def pytest_addoption(parser: Parser, pluginmanager: PytestPluginManager):
@@ -126,9 +135,9 @@ def pytest_addoption(parser: Parser, pluginmanager: PytestPluginManager):
     :param pluginmanager: The pytest plugin manager
     :type pluginmanager: pytest.PytestPluginManager
     """
-    tealogger.info('pytest Add Option')
-    tealogger.debug('Parser: %s', parser)
-    tealogger.debug('Plugin Manager: %s', pluginmanager)
+    conftest_logger.info('pytest Add Option')
+    conftest_logger.debug(f'Parser: {parser}')
+    conftest_logger.debug(f'Plugin Manager: {pluginmanager}')
 
 
 def pytest_configure(config: Config) -> None:
@@ -139,8 +148,8 @@ def pytest_configure(config: Config) -> None:
     :param config: The pytest config object
     :type config: pytest.Config
     """
-    tealogger.info('pytest Configure')
-    tealogger.debug('Config: %s', config)
+    conftest_logger.info('pytest Configure')
+    conftest_logger.debug(f'Config: {config}')
 
 
 def pytest_sessionstart(session: Session) -> None:
@@ -152,8 +161,26 @@ def pytest_sessionstart(session: Session) -> None:
     :param session: The pytest session object
     :type session: pytest.Session
     """
-    tealogger.info('pytest Session Start')
-    tealogger.debug('Session: %s', session)
+    conftest_logger.info('pytest Session Start')
+    conftest_logger.debug(f'Session: {session}')
+
+    conftest_logger.debug('Platform Information')
+    conftest_logger.debug(f'Architecture: {platform.architecture()}')
+    conftest_logger.debug(f'Machine: {platform.machine()}')
+    conftest_logger.debug(f'Node: {platform.node()}')
+    conftest_logger.debug(f'Platform: {platform.platform()}')
+    conftest_logger.debug(f'Processor: {platform.processor()}')
+    conftest_logger.debug(f'Python Build: {platform.python_build()}')
+    conftest_logger.debug(f'Python Compiler: {platform.python_compiler()}')
+    conftest_logger.debug(f'Python Branch: {platform.python_branch()}')
+    conftest_logger.debug(f'Python Implementation: {platform.python_implementation()}')
+    conftest_logger.debug(f'Python Revision: {platform.python_revision()}')
+    conftest_logger.debug(f'Python Version: {platform.python_version()}')
+    conftest_logger.debug(f'Python Version Tuple: {platform.python_version_tuple()}')
+    conftest_logger.debug(f'Release: {platform.release()}')
+    conftest_logger.debug(f'System: {platform.system()}')
+    conftest_logger.debug(f'Version: {platform.version()}')
+    conftest_logger.debug(f'Unix Name: {platform.uname()}')
 
 
 def pytest_sessionfinish(session: Session, exitstatus: Union[int, ExitCode]):
@@ -164,9 +191,9 @@ def pytest_sessionfinish(session: Session, exitstatus: Union[int, ExitCode]):
     :param exitstatus: The status which pytest will return to the system
     :type exitstatus: Union[int, pytest.ExitCode]
     """
-    tealogger.info('pytest Session Finish')
-    tealogger.debug(f'Session: {session}')
-    tealogger.debug(f'Exit Status: {exitstatus}')
+    conftest_logger.info('pytest Session Finish')
+    conftest_logger.debug(f'Session: {session}')
+    conftest_logger.debug(f'Exit Status: {exitstatus}')
 
 
 def pytest_unconfigure(config: Config):
@@ -177,8 +204,8 @@ def pytest_unconfigure(config: Config):
     :param config: The pytest config object
     :type config: pytest.Config
     """
-    tealogger.info('pytest Unconfigure')
-    tealogger.debug(f'Config: {config}')
+    conftest_logger.info('pytest Unconfigure')
+    conftest_logger.debug(f'Config: {config}')
 
 
 @pytest.fixture(scope='function')
