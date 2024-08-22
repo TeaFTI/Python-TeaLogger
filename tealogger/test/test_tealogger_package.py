@@ -33,7 +33,6 @@ class TestTeaLoggerPackage:
         # Identity compare
         assert tealogger_set is tealogger_get
 
-
     def test_tealogger_import(
         self,
         attribute: str,
@@ -49,19 +48,16 @@ class TestTeaLoggerPackage:
 
         assert hasattr(tealogger, attribute)
 
-    # def test_debug_log(
-    #     self,
-    #     attribute: str,
-    # ):
-    #     """Test Debug Log"""
+    def test_debug_log(
+        self,
+        attribute: str,
+        capsys,
+    ):
+        """Test Debug Log"""
 
-    #     # Set the logging level to DEBUG
-    #     tealogger.setLevel(tealogger.DEBUG)
+        # Set the logging level to DEBUG
+        tealogger.setLevel(tealogger.DEBUG)
 
-    #     tealogger.debug('TeaLogger: Debug Message')
-    #     tealogger.info('TeaLogger: Info Message')
-    #     tealogger.warning('TeaLogger: Warning Message')
-    #     tealogger.error('TeaLogger: Error Message')
-    #     tealogger.critical('TeaLogger: Critical Message')
+        tealogger.debug('TeaLogger: Debug Message')
 
-    #     assert hasattr(tealogger, attribute)
+        print(capsys.readouterr())
