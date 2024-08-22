@@ -33,14 +33,7 @@
                 "strategy": "auto",
                 "data": {
                     "attribute": [
-                        "log",
-                        "setLevel",
-                        "set_level",
-                        "debug",
-                        "info",
-                        "warning",
-                        "error",
-                        "critical"
+                        "debug"
                     ]
                 }
             }

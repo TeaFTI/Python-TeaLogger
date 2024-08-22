@@ -68,6 +68,7 @@ def pytest_generate_tests(metafunc: Metafunc):
     function_name = metafunc.function.__name__
 
     # Load the test data
+    test_data_path = None
     if (Path(__file__).parent / f'{module_name}.json').exists():
         test_data_path = Path(__file__).parent / f'{module_name}.json'
     elif (Path(__file__).parent / 'data.json').exists():
@@ -78,6 +79,10 @@ def pytest_generate_tests(metafunc: Metafunc):
             data = json.load(file)
     except FileNotFoundError as error:
         conftest_logger.warning(f'No Test Data Found: {module_name}')
+        # pytest.skip(f'Skip No Test Data Found: {module_name}')
+    except TypeError as error:
+        conftest_logger.warning(f'No Test Data Path Set: {module_name}')
+        # pytest.skip(f'Skip No Test Data Path Set: {module_name}')
 
     # Module Level
     if (
