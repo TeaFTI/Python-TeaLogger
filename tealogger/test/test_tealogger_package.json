@@ -29,11 +29,14 @@
                     ]
                 }
             },
-            "test_debug_log": {
+            "test_tealogger_debug_level_success": {
                 "strategy": "auto",
                 "data": {
-                    "attribute": [
-                        "debug"
+                    "message": [
+                        "TeaLogger: Debug Message"
+                    ],
+                    "output": [
+                        "TeaLogger: Debug Message"
                     ]
                 }
             }

@@ -5,6 +5,11 @@ Test Tea Logger Package
 This module test functionality for the Tea Logger Package.
 """
 
+from collections.abc import Generator
+import os
+import sys
+
+from pytest import CaptureFixture, LogCaptureFixture
 import tealogger
 
 
@@ -17,6 +22,13 @@ class TestTeaLoggerPackage:
         get_name: str,
     ):
         """Test tealogger Instance
+
+        Test the create of a new instance of the TeaLogger class.
+
+        :param set_name: The name of the new TeaLogger instance to set
+        :type set_name: str
+        :param get_name: The name of the new TeaLogger instance to get
+        :type get_name: str
         """
 
         tealogger_set = tealogger.TeaLogger(set_name)
@@ -48,16 +60,25 @@ class TestTeaLoggerPackage:
 
         assert hasattr(tealogger, attribute)
 
-    def test_debug_log(
+    def test_tealogger_debug_level_success(
         self,
-        attribute: str,
-        capsys,
+        message: str,
+        output: str,
+        capfd: Generator[CaptureFixture[str], None, None],
+        # caplog: Generator[LogCaptureFixture, None, None],
     ):
         """Test Debug Log"""
 
         # Set the logging level to DEBUG
         tealogger.setLevel(tealogger.DEBUG)
 
-        tealogger.debug('TeaLogger: Debug Message')
+        tealogger.debug(f'De Bug...: Debug Message')
+        tealogger.debug(message)
 
-        print(capsys.readouterr())
+        # Get
+        # - Standard Output (file descriptor 1)
+        # - Standard Error (file descriptor 2)
+        stdout, _ = capfd.readouterr()
+        print(repr(stdout))
+
+        # assert output in stdout
