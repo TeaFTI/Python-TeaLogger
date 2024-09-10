@@ -149,9 +149,6 @@ def pytest_generate_tests(metafunc: Metafunc):
                     )
                 ]
 
-            # argument_name_list = list(argument_name_list)
-            # argument_value_list = list(argument_value_list)
-
             # conftest_logger.debug(f'Argument Name List: {argument_name_list}')
             # conftest_logger.debug(f'Argument Value List: {argument_value_list}')
 
