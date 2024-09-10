@@ -5,11 +5,12 @@ Configure Test
 This module implement test configuration for Tea Logger.
 """
 
-from itertools import product
 import json
-from pathlib import Path
+import os
 import platform
-from typing import Union
+from itertools import product
+from pathlib import Path
+import sys
 
 import pytest
 from pytest import (
@@ -26,6 +27,7 @@ import tealogger
 # Configure conftest_logger
 conftest_logger = tealogger.TeaLogger(name=__name__)
 # conftest_logger = tealogger.get_logger(name=__name__)
+
 
 def pytest_generate_tests(metafunc: Metafunc):
     """Generate Test Hook
@@ -74,59 +76,102 @@ def pytest_generate_tests(metafunc: Metafunc):
     elif (Path(__file__).parent / 'data.json').exists():
         test_data_path = Path(__file__).parent / 'data.json'
 
-    try:
-        with open(test_data_path, 'r', encoding='utf-8') as file:
-            data = json.load(file)
-    except FileNotFoundError as error:
-        conftest_logger.warning(f'No Test Data Found: {module_name}')
-        # pytest.skip(f'Skip No Test Data Found: {module_name}')
-    except TypeError as error:
-        conftest_logger.warning(f'No Test Data Path Set: {module_name}')
-        # pytest.skip(f'Skip No Test Data Path Set: {module_name}')
+    # Inject the test data
+    if test_data_path:
+        try:
+            with open(test_data_path, 'r', encoding='utf-8') as file:
+                data = json.load(file)
+        except FileNotFoundError as error:
+            conftest_logger.warning(f'No Test Data Found: {module_name}')
+            conftest_logger.error(f'Error: {error}')
+            pytest.skip(f'Skip No Test Data Found: {module_name}')
+        except TypeError as error:
+            conftest_logger.warning(f'No Test Data Path Set: {module_name}')
+            conftest_logger.error(f'Error: {error}')
+            pytest.skip(f'Skip No Test Data Path Set: {module_name}')
 
-    # Module Level
-    if (
-        module_name in data
-        and class_name in data[module_name]
-        and function_name in data[module_name][class_name]
-    ):
-        conftest_logger.debug('Generate Module Test')
-        test_data = data[module_name][class_name][function_name]['data']
-        conftest_logger.debug(f'Test Data: {test_data}')
+        ################
+        # Module Level #
+        ################
+        if (
+            module_name in data
+            and class_name in data[module_name]
+            and function_name in data[module_name][class_name]
+        ):
+            conftest_logger.debug('Generate Module Test')
+            function_data = data[module_name][class_name][function_name]
+            test_data = function_data['data']
+            # conftest_logger.debug(f'Test Data: {test_data}')
 
-        argument_name_list = test_data.keys()
-        argument_value_list = test_data.values()
+            argument_name_list = test_data.keys()
+            argument_value_list = test_data.values()
 
-        strategy = data[module_name][class_name][function_name]['strategy']
+            strategy = function_data['strategy']
+            # conftest_logger.debug(f'Strategy: {strategy}')
 
-        match strategy:
-            case 'product':
-                # Create the cartesian product of the argument value to test
-                product_value_list = product(*argument_value_list)
-            case _:
-                # Create a zip of the argument value to test
-                product_value_list = zip(*argument_value_list)
+            match strategy:
+                case 'product':
+                    # Create the cartesian product of the argument value to test
+                    argument_value_list = list(product(*argument_value_list))
+                case _:
+                    # Create a zip of the argument value to test
+                    argument_value_list = list(zip(*argument_value_list))
 
-        # argument_name_list = list(argument_name_list)
-        # product_value_list = list(product_value_list)
+            # Exclude
+            if (
+                'exclude' in function_data
+                and 'strategy' in function_data['exclude']
+                and 'data' in function_data['exclude']
+            ):
+                exclude_strategy = function_data['exclude']['strategy']
+                exclude_data = function_data['exclude']['data']
+                # conftest_logger.debug(f'Exclude Strategy: {exclude_strategy}')
+                # conftest_logger.debug(f'Exclude Data: {exclude_data}')
 
-        conftest_logger.debug(f'Argument Name List: {argument_name_list}')
-        conftest_logger.debug(f'Argument Value List: {argument_value_list}')
-        conftest_logger.debug(f'Product Value List: {product_value_list}')
+                match exclude_strategy:
+                    case 'product':
+                        # Create the cartesian product of the exclude data
+                        exclude_value_list = list(product(*exclude_data.values()))
+                    case _:
+                        # Default
+                        exclude_value_list = list(product(*exclude_data.values()))
 
-        # Parametrize the test(s), only if test_data is available
-        metafunc.parametrize(
-            argnames=argument_name_list,
-            argvalues=product_value_list,
-        )
+                # conftest_logger.debug(f'Exclude Value List: {exclude_value_list}')
 
-    # Class Level
-    elif class_name in data:
-        conftest_logger.debug('Generate Class Test')
+                # Remove the exclude value from the argument value
+                # NOTE: Not sure if this is best implementation
+                argument_value_list = [
+                    argument_value
+                    for argument_value in argument_value_list
+                    if not any(
+                        set(exclude_value).issubset(set(argument_value))
+                        for exclude_value in exclude_value_list
+                    )
+                ]
 
-    # Function Level
-    elif function_name in data:
-        conftest_logger.debug('Generate Function Test')
+            # argument_name_list = list(argument_name_list)
+            # argument_value_list = list(argument_value_list)
+
+            # conftest_logger.debug(f'Argument Name List: {argument_name_list}')
+            # conftest_logger.debug(f'Argument Value List: {argument_value_list}')
+
+            # Parametrize the test(s), only if test_data is available
+            metafunc.parametrize(
+                argnames=argument_name_list,
+                argvalues=argument_value_list,
+            )
+
+        ###############
+        # Class Level #
+        ###############
+        elif class_name in data:
+            conftest_logger.debug('Generate Class Test')
+
+        ##################
+        # Function Level #
+        ##################
+        elif function_name in data:
+            conftest_logger.debug('Generate Function Test')
 
 
 def pytest_addoption(parser: Parser, pluginmanager: PytestPluginManager):
@@ -188,7 +233,7 @@ def pytest_sessionstart(session: Session) -> None:
     conftest_logger.debug(f'Unix Name: {platform.uname()}')
 
 
-def pytest_sessionfinish(session: Session, exitstatus: Union[int, ExitCode]):
+def pytest_sessionfinish(session: Session, exitstatus: int | ExitCode):
     """Finish Session
 
     :param session: The pytest session object
