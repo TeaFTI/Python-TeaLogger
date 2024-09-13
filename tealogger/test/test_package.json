@@ -1,20 +1,20 @@
 {
-    "test_tealogger_package": {
-        "TestTeaLoggerPackage": {
-            "test_tealogger_instance": {
+    "test_package": {
+        "TestPackage": {
+            "test_instance": {
                 "strategy": "auto",
                 "data": {
                     "set_name": [
-                        "alpha",
-                        "beta"
+                        "primary",
+                        "secondary"
                     ],
                     "get_name": [
-                        "alpha",
-                        "beta"
+                        "primary",
+                        "secondary"
                     ]
                 }
             },
-            "test_tealogger_import": {
+            "test_import": {
                 "strategy": "product",
                 "data": {
                     "attribute": [
@@ -29,7 +29,7 @@
                     ]
                 }
             },
-            "test_tealogger_debug_level_success": {
+            "test_debug_level_success": {
                 "strategy": "auto",
                 "data": {
                     "message": [
