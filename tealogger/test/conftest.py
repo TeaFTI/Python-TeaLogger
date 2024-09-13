@@ -6,11 +6,9 @@ This module implement test configuration for Tea Logger.
 """
 
 import json
-import os
 import platform
 from itertools import product
 from pathlib import Path
-import sys
 
 import pytest
 from pytest import (
