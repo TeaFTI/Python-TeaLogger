@@ -29,14 +29,22 @@
                     ]
                 }
             },
-            "test_debug_level_success": {
+            "test_str_level": {
                 "strategy": "auto",
                 "data": {
-                    "message": [
-                        "TeaLogger: Debug Message"
+                    "level": [
+                        "DEBUG",
+                        "INFO",
+                        "WARNING",
+                        "ERROR",
+                        "CRITICAL"
                     ],
-                    "output": [
-                        "TeaLogger: Debug Message"
+                    "message": [
+                        "Debug Message",
+                        "Info Message",
+                        "Warning Message",
+                        "Error Message",
+                        "Critical Message"
                     ]
                 }
             }

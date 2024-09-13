@@ -47,7 +47,14 @@ class TestPackage:
         self,
         attribute: str,
     ):
-        """Test Construction"""
+        """Test Construction
+
+        Test the construction and import attribute of the TeaLogger
+        class.
+
+        :param attribute: The attribute of the TeaLogger object
+        :type attribute: str
+        """
 
         tealogger.log(tealogger.DEBUG, 'TeaLogger: Debug Message')
         tealogger.debug('TeaLogger: Debug Message')
@@ -58,25 +65,29 @@ class TestPackage:
 
         assert hasattr(tealogger, attribute)
 
-    def test_debug_level_success(
+    def test_str_level(
         self,
+        level: str,
         message: str,
-        output: str,
         capfd: Generator[CaptureFixture[str], None, None],
         # caplog: Generator[LogCaptureFixture, None, None],
     ):
         """Test Debug Log"""
 
-        # Set the logging level to DEBUG
-        tealogger.setLevel(tealogger.DEBUG)
+        # Set the logging level to level
+        tealogger.setLevel(level)
 
-        tealogger.debug(f'De Bug...: Debug Message')
-        tealogger.debug(message)
+        # tealogger.log(level, message)
+        tealogger.debug('Debug Message')
+        tealogger.info('Info Message')
+        tealogger.warning('Warning Message')
+        tealogger.error('Error Message')
+        tealogger.critical('Critical Message')
 
         # Get
         # - Standard Output (file descriptor 1)
         # - Standard Error (file descriptor 2)
         stdout, _ = capfd.readouterr()
-        print(repr(stdout))
+        # print(repr(stdout))
 
-        # assert output in stdout
+        assert message in stdout
