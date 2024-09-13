@@ -233,6 +233,11 @@ def pytest_sessionstart(session: Session) -> None:
 def pytest_sessionfinish(session: Session, exitstatus: int | ExitCode):
     """Finish Session
 
+    Called after whole test run finished, right before returning the
+    exit status to the system.
+
+    NOTE: Run once
+
     :param session: The pytest session object
     :type session: pytest.Session
     :param exitstatus: The status which pytest will return to the system
@@ -246,7 +251,9 @@ def pytest_sessionfinish(session: Session, exitstatus: int | ExitCode):
 def pytest_unconfigure(config: Config):
     """Unconfigure Test
 
-    Called before test process is exited
+    Called before test process is exited.
+
+    NOTE: Run once
 
     :param config: The pytest config object
     :type config: pytest.Config
