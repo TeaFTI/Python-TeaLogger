@@ -1,27 +1,25 @@
 """
-Test Tea Logger Package
-~~~~~~~~~~~~~~~~~~~~~~~
+Test Package
+~~~~~~~~~~~~
 
 This module test functionality for the Tea Logger Package.
 """
 
 from collections.abc import Generator
-import os
-import sys
 
-from pytest import CaptureFixture, LogCaptureFixture
+from pytest import CaptureFixture
 import tealogger
 
 
-class TestTeaLoggerPackage:
-    """Test Tea Logger Package"""
+class TestPackage:
+    """Test Package"""
 
-    def test_tealogger_instance(
+    def test_instance(
         self,
         set_name: str,
         get_name: str,
     ):
-        """Test tealogger Instance
+        """Test Instance
 
         Test the create of a new instance of the TeaLogger class.
 
@@ -45,11 +43,11 @@ class TestTeaLoggerPackage:
         # Identity compare
         assert tealogger_set is tealogger_get
 
-    def test_tealogger_import(
+    def test_import(
         self,
         attribute: str,
     ):
-        """Test tealogger Construction"""
+        """Test Construction"""
 
         tealogger.log(tealogger.DEBUG, 'TeaLogger: Debug Message')
         tealogger.debug('TeaLogger: Debug Message')
@@ -60,7 +58,7 @@ class TestTeaLoggerPackage:
 
         assert hasattr(tealogger, attribute)
 
-    def test_tealogger_debug_level_success(
+    def test_debug_level_success(
         self,
         message: str,
         output: str,
