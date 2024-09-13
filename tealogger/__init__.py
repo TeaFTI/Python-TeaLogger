@@ -165,7 +165,7 @@ setLevel = set_level
 
 
 def log(
-    level: int,
+    level: Union[int, str],
     message: str,
     *args,
     **kwargs
@@ -177,7 +177,16 @@ def log(
     :param message: The message to log
     :type message: str
     """
-    tea.log(level, message, *args, **kwargs)
+
+    if isinstance(level, str):
+        level = logging.getLevelName(level)
+
+    tea.log(
+        level=level,
+        msg=message,
+        *args,
+        **kwargs
+    )
 
 
 def debug(
