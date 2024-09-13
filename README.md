@@ -3,10 +3,35 @@
 Python Tea Logger
 
 ## Table of Content
+* [Overview](#overview)
+  * [Quick Start](#quick-start)
+  * [Level](#level)
 * [Note](#note)
 * [Reference](#reference)
 
 ## Overview
+
+Tea Logger is a simple logging package for Python.
+
+### Quick Start
+
+Install the `tealogger` package, available on
+[Python Package Index (PyPI)](https://pypi.org/).
+
+```bash
+pip install tealogger
+```
+
+Import the `tealogger` package to use.
+
+```python
+import tealogger
+
+# Set the logging level (optional)
+tealogger.setLevel(tealogger.DEBUG)
+
+tealogger.warning("WARNING: Message")
+```
 
 ### Level
 
