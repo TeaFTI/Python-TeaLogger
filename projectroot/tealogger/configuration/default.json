@@ -10,14 +10,14 @@
             "datefmt": "%Y-%m-%dT%H:%M:%S%z"
         },
         "color": {
-            "()": "tealogger.formatter.ColorFormatter",
+            "()": "projectroot.tealogger.formatter.ColorFormatter",
             "record_format": "[%(levelname)s %(name)s %(asctime)s] %(message)s",
             "date_format": "%Y-%m-%dT%H:%M:%S%z"
         }
     },
     "filters": {
         "stdout": {
-            "()" : "tealogger.filter.StandardOutFilter"
+            "()" : "projectroot.tealogger.filter.StandardOutFilter"
         }
     },
     "handlers": {
