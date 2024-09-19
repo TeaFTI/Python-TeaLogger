@@ -60,7 +60,7 @@
                 "stdout"
             ]
         },
-        "tealogger": {
+        "tealogger.tealogger": {
             "level": "WARNING",
             "propagate": false,
             "filters": [],
