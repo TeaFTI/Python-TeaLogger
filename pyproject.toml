@@ -7,18 +7,48 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tealogger"
+dynamic = [
+    "version",
+    "readme"
+]
+dependencies = [
+    "pytest"
+]
+requires-python = ">= 3.10"
 authors = [
     {name = "TeaFTI"},
 ]
 description = "Tea Logger"
-requires-python = ">=3.7.0"
-keywords = [ "tealogger" ]
-dependencies = [
-    "pytest"
+license = {file = "LICENSE"}
+keywords = [
+    "tealogger"
 ]
-dynamic = [
-    "version",
-    "readme"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Logger",
+
+    "License :: OSI Approved :: MIT License",
+
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+[project.optional-dependencies]
+develop = [
+    "build",
+    "pytest-cov",
+    "pytest",
+    "ruff",
+    "twine"
+]
+test = [
+    "pytest-cov",
+    "pytest",
+    "ruff",
 ]
 
 [project.urls]
