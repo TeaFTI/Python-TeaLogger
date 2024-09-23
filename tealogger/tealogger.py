@@ -123,22 +123,22 @@ tea = TeaLogger(
 )
 
 
-# def get_logger(
-#     name: str,
-# ):
-#     """Get the configured Tea Logger instance.
+def get_logger(
+    name: str,
+):
+    """Get the configured Tea Logger instance.
 
-#     :param name: The name for the configured TeaLogger
-#     :type name: str
+    :param name: The name for the configured TeaLogger
+    :type name: str
 
-#     :return: The configured Tea Logger instance
-#     :rtype: TeaLogger
-#     """
-#     return logging.getLogger(name)
+    :return: The configured Tea Logger instance
+    :rtype: TeaLogger
+    """
+    return logging.getLogger(name)
 
 
-# # Alias
-# getLogger = get_logger
+# Alias
+getLogger = get_logger
 
 
 def set_level(

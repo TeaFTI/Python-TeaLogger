@@ -17,6 +17,8 @@ from .tealogger import CRITICAL
 from .tealogger import NOTSET
 
 # Function
+from .tealogger import get_logger
+from .tealogger import getLogger
 from .tealogger import set_level
 from .tealogger import setLevel
 from .tealogger import log
@@ -39,6 +41,8 @@ __all__ = [
     'NOTSET',
 
     # Function
+    'get_logger',
+    'getLogger',
     'set_level',
     'setLevel',
     'log',
