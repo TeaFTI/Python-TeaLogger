@@ -7,7 +7,8 @@ This module test functionality for the Tea Logger Package.
 
 from collections.abc import Generator
 
-from pytest import CaptureFixture
+# from pytest import CaptureFixture
+from pytest import LogCaptureFixture
 import tealogger
 
 
@@ -69,25 +70,33 @@ class TestPackage:
         self,
         level: str,
         message: str,
-        capfd: Generator[CaptureFixture[str], None, None],
-        # caplog: Generator[LogCaptureFixture, None, None],
+        # capfd: Generator[CaptureFixture[str], None, None],
+        caplog: Generator[LogCaptureFixture, None, None],
     ):
-        """Test Debug Log"""
+        """Test String Level Log"""
+
+        level_logger_name = 'tealogger.test.package.level'
+
+        level_logger = tealogger.get_logger(name=level_logger_name)
 
         # Set the logging level to level
-        tealogger.setLevel(level)
+        level_logger.setLevel(level)
 
-        # tealogger.log(level, message)
-        tealogger.debug('Debug Message')
-        tealogger.info('Info Message')
-        tealogger.warning('Warning Message')
-        tealogger.error('Error Message')
-        tealogger.critical('Critical Message')
+        with caplog.at_level(level, logger=level_logger_name):
+            level_logger.debug('Debug Message')
+            level_logger.info('Info Message')
+            level_logger.warning('Warning Message')
+            level_logger.error('Error Message')
+            level_logger.critical('Critical Message')
+
+        # print("Record: ", caplog.records)
+        # print("Record Text: ", caplog.text)
 
         # Get
         # - Standard Output (file descriptor 1)
         # - Standard Error (file descriptor 2)
-        stdout, _ = capfd.readouterr()
+        # stdout, _ = capfd.readouterr()
         # print(repr(stdout))
 
-        assert message in stdout
+        # assert message in stdout
+        assert message in caplog.text
