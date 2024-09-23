@@ -66,11 +66,11 @@ packages = [
     "tealogger"
 ]
 
+[tool.setuptools.dynamic]
+readme = {file = ["README.md"], content-type = "text/markdown"}
+version = {file = "VERSION"}
+
 [tool.setuptools.package-data]
 tealogger = [
     "configuration/*"
 ]
-
-[tool.setuptools.dynamic]
-readme = {file = ["README.md"], content-type = "text/markdown"}
-version = {file = "VERSION"}
