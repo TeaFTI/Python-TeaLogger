@@ -27,6 +27,65 @@ conftest_logger = tealogger.TeaLogger(name=__name__)
 # conftest_logger = tealogger.get_logger(name=__name__)
 
 
+def pytest_addoption(parser: Parser, pluginmanager: PytestPluginManager):
+    """Register Command Line Option(s)
+
+    Register argparse style options and ini style config values, called
+    once at the beginning of a test run.
+
+    :param parser: The parser for command line option(s)
+    :type parser: pytest.Parser
+    :param pluginmanager: The pytest plugin manager
+    :type pluginmanager: pytest.PytestPluginManager
+    """
+    conftest_logger.info('pytest Add Option')
+    conftest_logger.debug(f'Parser: {parser}')
+    conftest_logger.debug(f'Plugin Manager: {pluginmanager}')
+
+
+def pytest_configure(config: Config) -> None:
+    """Configure Test
+
+    Allow perform of initial configuration.
+
+    :param config: The pytest config object
+    :type config: pytest.Config
+    """
+    conftest_logger.info('pytest Configure')
+    conftest_logger.debug(f'Config: {config}')
+
+
+def pytest_sessionstart(session: Session) -> None:
+    """Start Session
+
+    Called after the Session object has been created and before
+    performing collection and entering the run test loop.
+
+    :param session: The pytest session object
+    :type session: pytest.Session
+    """
+    conftest_logger.info('pytest Session Start')
+    conftest_logger.debug(f'Session: {session}')
+
+    conftest_logger.debug('Platform Information')
+    conftest_logger.debug(f'Architecture: {platform.architecture()}')
+    conftest_logger.debug(f'Machine: {platform.machine()}')
+    conftest_logger.debug(f'Node: {platform.node()}')
+    conftest_logger.debug(f'Platform: {platform.platform()}')
+    conftest_logger.debug(f'Processor: {platform.processor()}')
+    conftest_logger.debug(f'Python Build: {platform.python_build()}')
+    conftest_logger.debug(f'Python Compiler: {platform.python_compiler()}')
+    conftest_logger.debug(f'Python Branch: {platform.python_branch()}')
+    conftest_logger.debug(f'Python Implementation: {platform.python_implementation()}')
+    conftest_logger.debug(f'Python Revision: {platform.python_revision()}')
+    conftest_logger.debug(f'Python Version: {platform.python_version()}')
+    conftest_logger.debug(f'Python Version Tuple: {platform.python_version_tuple()}')
+    conftest_logger.debug(f'Release: {platform.release()}')
+    conftest_logger.debug(f'System: {platform.system()}')
+    conftest_logger.debug(f'Version: {platform.version()}')
+    conftest_logger.debug(f'Unix Name: {platform.uname()}')
+
+
 def pytest_generate_tests(metafunc: Metafunc):
     """Generate Test Hook
 
@@ -167,65 +226,6 @@ def pytest_generate_tests(metafunc: Metafunc):
         ##################
         elif function_name in data:
             conftest_logger.debug('Generate Function Test')
-
-
-def pytest_addoption(parser: Parser, pluginmanager: PytestPluginManager):
-    """Register Command Line Option(s)
-
-    Register argparse style options and ini style config values, called
-    once at the beginning of a test run.
-
-    :param parser: The parser for command line option(s)
-    :type parser: pytest.Parser
-    :param pluginmanager: The pytest plugin manager
-    :type pluginmanager: pytest.PytestPluginManager
-    """
-    conftest_logger.info('pytest Add Option')
-    conftest_logger.debug(f'Parser: {parser}')
-    conftest_logger.debug(f'Plugin Manager: {pluginmanager}')
-
-
-def pytest_configure(config: Config) -> None:
-    """Configure Test
-
-    Allow perform of initial configuration.
-
-    :param config: The pytest config object
-    :type config: pytest.Config
-    """
-    conftest_logger.info('pytest Configure')
-    conftest_logger.debug(f'Config: {config}')
-
-
-def pytest_sessionstart(session: Session) -> None:
-    """Start Session
-
-    Called after the Session object has been created and before
-    performing collection and entering the run test loop.
-
-    :param session: The pytest session object
-    :type session: pytest.Session
-    """
-    conftest_logger.info('pytest Session Start')
-    conftest_logger.debug(f'Session: {session}')
-
-    conftest_logger.debug('Platform Information')
-    conftest_logger.debug(f'Architecture: {platform.architecture()}')
-    conftest_logger.debug(f'Machine: {platform.machine()}')
-    conftest_logger.debug(f'Node: {platform.node()}')
-    conftest_logger.debug(f'Platform: {platform.platform()}')
-    conftest_logger.debug(f'Processor: {platform.processor()}')
-    conftest_logger.debug(f'Python Build: {platform.python_build()}')
-    conftest_logger.debug(f'Python Compiler: {platform.python_compiler()}')
-    conftest_logger.debug(f'Python Branch: {platform.python_branch()}')
-    conftest_logger.debug(f'Python Implementation: {platform.python_implementation()}')
-    conftest_logger.debug(f'Python Revision: {platform.python_revision()}')
-    conftest_logger.debug(f'Python Version: {platform.python_version()}')
-    conftest_logger.debug(f'Python Version Tuple: {platform.python_version_tuple()}')
-    conftest_logger.debug(f'Release: {platform.release()}')
-    conftest_logger.debug(f'System: {platform.system()}')
-    conftest_logger.debug(f'Version: {platform.version()}')
-    conftest_logger.debug(f'Unix Name: {platform.uname()}')
 
 
 def pytest_sessionfinish(session: Session, exitstatus: int | ExitCode):
