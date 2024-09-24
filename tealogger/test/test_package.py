@@ -73,7 +73,22 @@ class TestPackage:
         # capfd: Generator[CaptureFixture[str], None, None],
         caplog: Generator[LogCaptureFixture, None, None],
     ):
-        """Test String Level Log"""
+        """Test String Level Log
+
+        Test the logging of a message with a string level. Use caplog to
+        capture the output, and validate the message is in the output.
+
+        :param level: The level to set the logger
+        :type level: str
+        :param message: The message to log
+        :type message: str
+        :param caplog: The log capture fixture
+        :type caplog: Generator[LogCaptureFixture, None, None]
+
+        NOTE: This is not the best test implementation, but it works
+        cross-platform. The capfd for some reason have issue working on
+        Windows.
+        """
 
         level_logger_name = 'tealogger.test.package.level'
 
