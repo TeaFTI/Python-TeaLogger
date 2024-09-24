@@ -4,6 +4,9 @@
 
 junit-report.xml
 
+# Log
+*.log.*
+
 ##########
 # Python #
 ##########
