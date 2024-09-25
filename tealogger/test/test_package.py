@@ -6,9 +6,12 @@ This module test functionality for the Tea Logger Package.
 """
 
 from collections.abc import Generator
+import json
+from pathlib import Path
 
 # from pytest import CaptureFixture
 from pytest import LogCaptureFixture
+
 import tealogger
 
 
@@ -116,3 +119,30 @@ class TestPackage:
 
         # assert message in stdout
         assert message in caplog.text
+
+    def test_dict_config(
+        self,
+    ):
+        """Test Dictionary Configuration
+
+        Test the construction of TeaLogger with a dictionary
+        configuration via JSON (JavaScript Object Notation).
+        """
+
+        dict_config_logger_name = 'tealogger.test.package.dictconfig'
+
+        configuration = None
+        current_module_path = Path(__file__).parent.expanduser().resolve()
+        with open(
+            current_module_path / 'tealogger.json',
+            mode='r',
+            encoding='utf-8'
+        ) as file:
+            configuration = json.load(file)
+
+        dict_config_logger = tealogger.TeaLogger(
+            dict_config_logger_name,
+            dictConfig=configuration
+        )
+
+        assert dict_config_logger.name == dict_config_logger_name
