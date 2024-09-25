@@ -22,7 +22,8 @@ class TestPackage:
     ):
         """Test Instance
 
-        Test the create of a new instance of the TeaLogger class.
+        Test the import of the tealogger package, and the create of a
+        new instance of the TeaLogger class.
 
         :param set_name: The name of the new TeaLogger instance to set
         :type set_name: str
