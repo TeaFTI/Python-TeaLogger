@@ -1,0 +1,19 @@
+{
+    "test_class": {
+        "TestClass": {
+            "test_class_instance": {
+                "strategy": "auto",
+                "data": {
+                    "set_name": [
+                        "primary",
+                        "secondary"
+                    ],
+                    "get_name": [
+                        "primary",
+                        "secondary"
+                    ]
+                }
+            }
+        }
+    }
+}
