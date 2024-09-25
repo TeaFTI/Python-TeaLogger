@@ -2,6 +2,8 @@
 # General #
 ###########
 
+# Test
+coverage.json
 junit-report.xml
 
 # Log
