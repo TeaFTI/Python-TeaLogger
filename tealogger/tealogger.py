@@ -123,6 +123,15 @@ tea = TeaLogger(
 )
 
 
+def configure(configuration: dict):
+    """Configure the Tea Logger with the given configuration.
+
+    :param configuration: The configuration for the Tea Logger
+    :type configuration: dict
+    """
+    logging.config.dictConfig(configuration)
+
+
 def get_logger(
     name: str,
 ):
