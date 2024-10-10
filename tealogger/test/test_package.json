@@ -18,9 +18,12 @@
                 "strategy": "product",
                 "data": {
                     "attribute": [
-                        "log",
-                        "setLevel",
+                        "configure",
+                        "get_logger",
+                        "getLogger",
                         "set_level",
+                        "setLevel",
+                        "log",
                         "debug",
                         "info",
                         "warning",

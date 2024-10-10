@@ -5,6 +5,7 @@ Configure Test
 This module implement test configuration for Tea Logger.
 """
 
+from collections.abc import Iterator
 import json
 import platform
 from itertools import product
@@ -258,6 +259,29 @@ def pytest_unconfigure(config: Config):
     """
     conftest_logger.info('pytest Unconfigure')
     conftest_logger.debug(f'Config: {config}')
+
+
+@pytest.fixture(scope='session')
+def base_configuration() -> Iterator[dict]:
+    """Base Configuration Fixture
+
+    Load the base configuration.
+
+    :return: The base configuration
+    :rtype: dict
+    """
+    conftest_logger.info('Base Configuration')
+
+    configuration = None
+    current_module_path = Path(__file__).parent.expanduser().resolve()
+    with open(
+        current_module_path / 'base_configuration.json',
+        mode='r',
+        encoding='utf-8'
+    ) as file:
+        configuration = json.load(file)
+
+    yield configuration
 
 
 @pytest.fixture(scope='function')

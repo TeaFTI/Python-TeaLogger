@@ -6,8 +6,6 @@ This module test functionality for the Tea Logger Package.
 """
 
 from collections.abc import Generator
-import json
-from pathlib import Path
 
 # from pytest import CaptureFixture
 from pytest import LogCaptureFixture
@@ -120,29 +118,62 @@ class TestPackage:
         # assert message in stdout
         assert message in caplog.text
 
+    def test_configure(
+        self,
+        base_configuration: dict,
+    ):
+        """Test Configure
+
+        Test the configuration of the tealogger package without
+        construction of an instance of the TeaLogger class, via JSON
+        (JavaScript Object Notation).
+
+        :param base_configuration: The base configuration fixture
+        :type base_configuration: dict
+        """
+
+        configure_logger_name = 'tealogger.test.package.configure'
+
+        tealogger.configure(configuration=base_configuration)
+
+        configure_logger = tealogger.get_logger(
+            name=configure_logger_name
+        )
+
+        # Sanity Check
+        configure_logger.debug('Configure Logger: Debug Message')
+        configure_logger.info('Configure Logger: Info Message')
+        configure_logger.warning('Configure Logger: Warning Message')
+        configure_logger.error('Configure Logger: Error Message')
+        configure_logger.critical('Configure Logger: Critical Message')
+
+        assert configure_logger.name == configure_logger_name
+
     def test_dict_config(
         self,
+        base_configuration: dict,
     ):
         """Test Dictionary Configuration
 
-        Test the construction of TeaLogger with a dictionary
-        configuration via JSON (JavaScript Object Notation).
+        Test the construction of an instance of the TeaLogger class with
+        dictionary configuration via JSON (JavaScript Object Notation).
+
+        :param base_configuration: The base configuration fixture
+        :type base_configuration: dict
         """
 
         dict_config_logger_name = 'tealogger.test.package.dictconfig'
 
-        configuration = None
-        current_module_path = Path(__file__).parent.expanduser().resolve()
-        with open(
-            current_module_path / 'tealogger.json',
-            mode='r',
-            encoding='utf-8'
-        ) as file:
-            configuration = json.load(file)
-
         dict_config_logger = tealogger.TeaLogger(
             dict_config_logger_name,
-            dictConfig=configuration
+            dictConfig=base_configuration
         )
+
+        # Sanity Check
+        dict_config_logger.debug('Dict Config Logger: Debug Message')
+        dict_config_logger.info('Dict Config Logger: Info Message')
+        dict_config_logger.warning('Dict Config Logger: Warning Message')
+        dict_config_logger.error('Dict Config Logger: Error Message')
+        dict_config_logger.critical('Dict Config Logger: Critical Message')
 
         assert dict_config_logger.name == dict_config_logger_name
