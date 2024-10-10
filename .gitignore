@@ -2,6 +2,9 @@
 # General #
 ###########
 
+# Ruff
+.ruff_cache/
+
 # Test
 coverage.json
 junit-report.xml
