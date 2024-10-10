@@ -8,7 +8,7 @@ The module implements the filter functionality of the Tea Logger.
 import logging
 
 
-class StandardOutputFilter(logging.Filter):
+class StdoutFilter(logging.Filter):
     """Standard Output Filter"""
 
     def filter(self, record: logging.LogRecord) -> bool:

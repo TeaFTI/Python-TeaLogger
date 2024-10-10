@@ -17,7 +17,7 @@
     },
     "filters": {
         "stdout": {
-            "()" : "tealogger.filter.StandardOutputFilter"
+            "()" : "tealogger.filter.StdoutFilter"
         }
     },
     "handlers": {
