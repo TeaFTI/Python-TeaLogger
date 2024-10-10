@@ -5,7 +5,7 @@
         "--capture=tee-sys",
         "-vvvvv",
         "--durations=0",
-        "--junit-xml=junit-report.xml"
+        "--junit-xml"
     ],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
