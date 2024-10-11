@@ -8,6 +8,7 @@ The module implements the core functionality of the Tea Logger.
 import json
 import logging
 import logging.config
+from os import PathLike
 from pathlib import Path
 from typing import Union
 
@@ -64,7 +65,17 @@ class TeaLogger(logging.Logger):
 
         # Configuration
         if kwargs.get('dictConfig'):
+            # NOTE: No Coverage
             # Dictionary
+            # configuration = kwargs.get('dictConfig')
+
+            # if 'loggers' not in configuration:
+            #     configuration['loggers'] = {}
+            #     configuration['loggers'][name] = {
+            #         'propagate': kwargs.get('propagate', False),
+            #         'handlers': kwargs.get('handler_list', ['default'])
+            #     }
+
             logging.config.dictConfig(kwargs.get('dictConfig'))
         elif kwargs.get('fileConfig'):
             # File
@@ -123,12 +134,23 @@ tea = TeaLogger(
 )
 
 
-def configure(configuration: dict):
+def configure(configuration: dict | PathLike):
     """Configure the Tea Logger with the given configuration.
 
     :param configuration: The configuration for the Tea Logger
-    :type configuration: dict
+    :type configuration: dict or PathLike
     """
+    if not isinstance(configuration, dict):
+        try:
+            with open(
+                configuration,
+                mode='r',
+                encoding='utf-8'
+            ) as file:
+                configuration = json.load(file)
+        except Exception as error:
+            raise
+
     logging.config.dictConfig(configuration)
 
 

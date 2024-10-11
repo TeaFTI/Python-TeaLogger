@@ -6,6 +6,7 @@ This module test functionality for the Tea Logger Package.
 """
 
 from collections.abc import Generator
+from pathlib import Path
 
 # from pytest import CaptureFixture
 from pytest import LogCaptureFixture
@@ -31,7 +32,6 @@ class TestPackage:
         :param get_name: The name of the new TeaLogger instance to get
         :type get_name: str
         """
-
         tealogger_set = tealogger.TeaLogger(set_name)
         tealogger_get = tealogger.TeaLogger(get_name)
 
@@ -58,8 +58,8 @@ class TestPackage:
         :param attribute: The attribute of the TeaLogger object
         :type attribute: str
         """
-
         tealogger.log(tealogger.DEBUG, 'TeaLogger: Debug Message')
+        tealogger.log('DEBUG', 'TeaLogger: Debug Message')
         tealogger.debug('TeaLogger: Debug Message')
         tealogger.info('TeaLogger: Info Message')
         tealogger.warning('TeaLogger: Warning Message')
@@ -91,7 +91,6 @@ class TestPackage:
         cross-platform. The capfd for some reason have issue working on
         Windows.
         """
-
         level_logger_name = 'tealogger.test.package.level'
 
         level_logger = tealogger.get_logger(name=level_logger_name)
@@ -118,20 +117,19 @@ class TestPackage:
         # assert message in stdout
         assert message in caplog.text
 
-    def test_configure(
+    def test_configure_dict(
         self,
         base_configuration: dict,
     ):
-        """Test Configure
+        """Test Configure Dictionary
 
         Test the configuration of the tealogger package without
-        construction of an instance of the TeaLogger class, via JSON
-        (JavaScript Object Notation).
+        construction of an instance of the TeaLogger class, via
+        dictionary.
 
         :param base_configuration: The base configuration fixture
         :type base_configuration: dict
         """
-
         configure_logger_name = 'tealogger.test.package.configure'
 
         tealogger.configure(configuration=base_configuration)
@@ -141,11 +139,39 @@ class TestPackage:
         )
 
         # Sanity Check
-        configure_logger.debug('Configure Logger: Debug Message')
-        configure_logger.info('Configure Logger: Info Message')
-        configure_logger.warning('Configure Logger: Warning Message')
-        configure_logger.error('Configure Logger: Error Message')
-        configure_logger.critical('Configure Logger: Critical Message')
+        configure_logger.debug('Configure Dictionary Logger: Debug Message')
+        configure_logger.info('Configure Dictionary Logger: Info Message')
+        configure_logger.warning('Configure Dictionary Logger: Warning Message')
+        configure_logger.error('Configure Dictionary Logger: Error Message')
+        configure_logger.critical('Configure Dictionary Logger: Critical Message')
+
+        assert configure_logger.name == configure_logger_name
+
+    def test_configure_pathlike(
+        self,
+    ):
+        """Test Configure PathLike
+
+        Test the configuration of the tealogger package without
+        construction of an instance of the TeaLogger class, via
+        PathLike.
+        """
+        configure_logger_name = 'tealogger.test.package.configure'
+
+        configuration_path = Path(__file__).parent.expanduser().resolve()
+        configuration_path = configuration_path / 'base_configuration.json'
+
+        tealogger.configure(configuration=configuration_path)
+        configure_logger = tealogger.get_logger(
+            name=configure_logger_name
+        )
+
+        # Sanity Check
+        configure_logger.debug('Configure PathLike Logger: Debug Message')
+        configure_logger.info('Configure PathLike Logger: Info Message')
+        configure_logger.warning('Configure PathLike Logger: Warning Message')
+        configure_logger.error('Configure PathLike Logger: Error Message')
+        configure_logger.critical('Configure PathLike Logger: Critical Message')
 
         assert configure_logger.name == configure_logger_name
 
@@ -161,7 +187,6 @@ class TestPackage:
         :param base_configuration: The base configuration fixture
         :type base_configuration: dict
         """
-
         dict_config_logger_name = 'tealogger.test.package.dictconfig'
 
         dict_config_logger = tealogger.TeaLogger(
@@ -175,5 +200,31 @@ class TestPackage:
         dict_config_logger.warning('Dict Config Logger: Warning Message')
         dict_config_logger.error('Dict Config Logger: Error Message')
         dict_config_logger.critical('Dict Config Logger: Critical Message')
+
+        assert dict_config_logger.name == dict_config_logger_name
+
+    def test_dict_config_minimal(
+        self,
+        minimal_configuration: dict,
+    ):
+        """Test Minimal Dictionary Configuration
+
+        Test the construction of an instance of the TeaLogger class with
+        a minimal dictionary configuration (without loggers section) via
+        JSON (JavaScript Object Notation).
+        """
+        dict_config_logger_name = 'tealogger.test.package.dictconfig'
+
+        dict_config_logger = tealogger.TeaLogger(
+            dict_config_logger_name,
+            dictConfig=minimal_configuration
+        )
+
+        # Sanity Check
+        dict_config_logger.debug('Dict Config Minimal Logger: Debug Message')
+        dict_config_logger.info('Dict Config Minimal Logger: Info Message')
+        dict_config_logger.warning('Dict Config Minimal Logger: Warning Message')
+        dict_config_logger.error('Dict Config Minimal Logger: Error Message')
+        dict_config_logger.critical('Dict Config Minimal Logger: Critical Message')
 
         assert dict_config_logger.name == dict_config_logger_name
