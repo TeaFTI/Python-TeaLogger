@@ -148,7 +148,7 @@ def configure(configuration: dict | PathLike):
                 encoding='utf-8'
             ) as file:
                 configuration = json.load(file)
-        except Exception as error:
+        except Exception:
             raise
 
     logging.config.dictConfig(configuration)
