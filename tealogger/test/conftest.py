@@ -262,10 +262,31 @@ def pytest_unconfigure(config: Config):
 
 
 @pytest.fixture(scope='session')
-def base_configuration() -> Iterator[dict]:
+def current_module_path() -> Path:
+    """Current Module Path
+
+    Get the current module path.
+
+    :return: The current module path
+    :rtype: Path
+    """
+    conftest_logger.info('Current Module Path')
+    conftest_logger.debug(
+        f'Current Module Path: '
+        f'{Path(__file__).parent.expanduser().resolve()}'
+    )
+
+    return Path(__file__).parent.expanduser().resolve()
+
+
+@pytest.fixture(scope='session')
+def base_configuration(current_module_path: Path) -> Iterator[dict]:
     """Base Configuration Fixture
 
     Load the base configuration.
+
+    :param current_module_path: The current module path fixture
+    :type current_module_path: Path
 
     :return: The base configuration
     :rtype: dict
@@ -273,7 +294,6 @@ def base_configuration() -> Iterator[dict]:
     conftest_logger.info('Base Configuration')
 
     configuration = None
-    current_module_path = Path(__file__).parent.expanduser().resolve()
     with open(
         current_module_path / 'base_configuration.json',
         mode='r',
@@ -284,13 +304,26 @@ def base_configuration() -> Iterator[dict]:
     yield configuration
 
 
-@pytest.fixture(scope='function')
-def function_logger():
-    """Function Logger"""
-    pass
+@pytest.fixture(scope='session')
+def minimal_configuration(current_module_path: Path) -> Iterator[dict]:
+    """Minimal Configuration Fixture
 
+    Load the minimal configuration.
 
-@pytest.fixture(scope='class')
-def class_logger():
-    """Class Logger"""
-    pass
+    :param current_module_path: The current module path fixture
+    :type current_module_path: Path
+
+    :return: The minimal configuration
+    :rtype: dict
+    """
+    conftest_logger.info('Minimal Configuration')
+
+    configuration = None
+    with open(
+        current_module_path / 'minimal_configuration.json',
+        mode='r',
+        encoding='utf-8'
+    ) as file:
+        configuration = json.load(file)
+
+    yield configuration
