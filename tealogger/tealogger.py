@@ -10,7 +10,7 @@ import logging
 import logging.config
 from os import PathLike
 from pathlib import Path
-from typing import Union
+from typing import Union, Any
 
 
 # Log Level
@@ -25,12 +25,12 @@ NOTSET = logging.NOTSET
 
 
 # Default
-DEFAULT_CONFIGURATION = None
+DEFAULT_CONFIGURATION: Any = None
 CURRENT_MODULE_PATH = Path(__file__).parent.expanduser().resolve()
 with open(
-    CURRENT_MODULE_PATH / 'configuration' / 'default.json',
-    mode='r',
-    encoding='utf-8'
+    CURRENT_MODULE_PATH / "configuration" / "default.json",
+    mode="r",
+    encoding="utf-8"
 ) as file:
     DEFAULT_CONFIGURATION = json.load(file)
 
@@ -64,41 +64,41 @@ class TeaLogger(logging.Logger):
         """
 
         # Configuration
-        if kwargs.get('dictConfig'):
+        if kwargs.get("dictConfig"):
             # NOTE: No Coverage
             # Dictionary
-            # configuration = kwargs.get('dictConfig')
+            # configuration = kwargs.get("dictConfig")
 
-            # if 'loggers' not in configuration:
-            #     configuration['loggers'] = {}
-            #     configuration['loggers'][name] = {
-            #         'propagate': kwargs.get('propagate', False),
-            #         'handlers': kwargs.get('handler_list', ['default'])
+            # if "loggers" not in configuration:
+            #     configuration["loggers"] = {}
+            #     configuration["loggers"][name] = {
+            #         "propagate": kwargs.get("propagate", False),
+            #         "handlers": kwargs.get("handler_list", ["default"])
             #     }
 
-            logging.config.dictConfig(kwargs.get('dictConfig'))
-        elif kwargs.get('fileConfig'):
+            logging.config.dictConfig(kwargs.get("dictConfig"))
+        elif kwargs.get("fileConfig"):
             # File
             ...
         else:
             # Default
-            if 'loggers' not in DEFAULT_CONFIGURATION:
-                DEFAULT_CONFIGURATION['loggers'] = {}
-            if name not in DEFAULT_CONFIGURATION['loggers']:
+            if "loggers" not in DEFAULT_CONFIGURATION:
+                DEFAULT_CONFIGURATION["loggers"] = {}
+            if name not in DEFAULT_CONFIGURATION["loggers"]:
                 # Configure new logger with default configuration
-                DEFAULT_CONFIGURATION['loggers'][name] = {
-                    'propagate': kwargs.get('propagate', False),
-                    'handlers': kwargs.get('handler_list', ['default'])
+                DEFAULT_CONFIGURATION["loggers"][name] = {
+                    "propagate": kwargs.get("propagate", False),
+                    "handlers": kwargs.get("handler_list", ["default"])
                 }
 
-                # configuration['loggers'][name]['handlers'] = kwargs.get('handler_list')
+                # configuration["loggers"][name]["handlers"] = kwargs.get("handler_list")
 
                 # NOTE: Override only individual configuration!
                 # Overriding the entire configuration will cause this child
                 # logger to inherit any missing configuration from the root
                 # logger. (Even if the configuration was set previously.)
-                DEFAULT_CONFIGURATION['loggers'][name]['level'] = logging.getLevelName(level)
-                # configuration['loggers'][name]['level'] = level
+                DEFAULT_CONFIGURATION["loggers"][name]["level"] = logging.getLevelName(level)
+                # configuration["loggers"][name]["level"] = level
 
             logging.config.dictConfig(DEFAULT_CONFIGURATION)
 
@@ -110,7 +110,7 @@ class TeaLogger(logging.Logger):
     def __init__(
         self,
         name: str,
-        level: Union[int, str] = NOTSET
+        level: int | str = NOTSET
     ) -> None:
         """Initialize Constructor
 
@@ -124,7 +124,7 @@ class TeaLogger(logging.Logger):
         :rtype: TeaLogger
         """
         # Call super class
-        super().__init__(self, name=name, level=level)
+        super().__init__(name=name, level=level)
         # logging.Logger.__init__(self, name=name, level=level)
 
 
@@ -140,30 +140,32 @@ def configure(configuration: dict | PathLike):
     :param configuration: The configuration for the Tea Logger
     :type configuration: dict or PathLike
     """
-    if not isinstance(configuration, dict):
+    if isinstance(configuration, dict):
+        configuration_data: dict = configuration
+    else:
         try:
             with open(
                 configuration,
-                mode='r',
-                encoding='utf-8'
+                mode="r",
+                encoding="utf-8"
             ) as file:
-                configuration = json.load(file)
+                configuration_data = json.load(file)
         except Exception:
             raise
 
-    logging.config.dictConfig(configuration)
+    logging.config.dictConfig(configuration_data)
 
 
 def get_logger(
     name: str,
-):
+) -> logging.Logger:
     """Get the configured Tea Logger instance.
 
     :param name: The name for the configured TeaLogger
     :type name: str
 
     :return: The configured Tea Logger instance
-    :rtype: TeaLogger
+    :rtype: logging.Logger
     """
     return logging.getLogger(name)
 
