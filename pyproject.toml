@@ -11,7 +11,7 @@ source-include = [
 
 [project]
 name = "tealogger"
-version = "0.9.1"
+version = "0.9.2"
 description = "Tea Logger"
 keywords = ["tealogger"]
 readme = "README.md"
