@@ -10,15 +10,14 @@ import logging
 import logging.config
 from os import PathLike
 from pathlib import Path
-from typing import Union, Any
-
+from typing import Any
 
 # Log Level
 CRITICAL = logging.CRITICAL
 FATAL = logging.FATAL
 ERROR = logging.ERROR
 WARNING = logging.WARNING
-WARN = logging.WARN
+WARN = logging.WARNING
 INFO = logging.INFO
 DEBUG = logging.DEBUG
 NOTSET = logging.NOTSET
@@ -28,9 +27,7 @@ NOTSET = logging.NOTSET
 DEFAULT_CONFIGURATION: Any = None
 CURRENT_MODULE_PATH = Path(__file__).parent.expanduser().resolve()
 with open(
-    CURRENT_MODULE_PATH / "configuration" / "default.json",
-    mode="r",
-    encoding="utf-8"
+    CURRENT_MODULE_PATH / "configuration" / "default.json", mode="r", encoding="utf-8"
 ) as file:
     DEFAULT_CONFIGURATION = json.load(file)
 
@@ -38,12 +35,7 @@ with open(
 class TeaLogger(logging.Logger):
     """Tea Logger"""
 
-    def __new__(
-        cls,
-        name: Union[str, None] = None,
-        level: Union[int, str] = NOTSET,
-        **kwargs
-    ):
+    def __new__(cls, name: str | None = None, level: int | str = NOTSET, **kwargs):
         """Create Constructor
 
         Create new instance of the TeaLogger class.
@@ -88,7 +80,7 @@ class TeaLogger(logging.Logger):
                 # Configure new logger with default configuration
                 DEFAULT_CONFIGURATION["loggers"][name] = {
                     "propagate": kwargs.get("propagate", False),
-                    "handlers": kwargs.get("handler_list", ["default"])
+                    "handlers": kwargs.get("handler_list", ["default"]),
                 }
 
                 # configuration["loggers"][name]["handlers"] = kwargs.get("handler_list")
@@ -97,7 +89,9 @@ class TeaLogger(logging.Logger):
                 # Overriding the entire configuration will cause this child
                 # logger to inherit any missing configuration from the root
                 # logger. (Even if the configuration was set previously.)
-                DEFAULT_CONFIGURATION["loggers"][name]["level"] = logging.getLevelName(level)
+                DEFAULT_CONFIGURATION["loggers"][name]["level"] = logging.getLevelName(
+                    level
+                )
                 # configuration["loggers"][name]["level"] = level
 
             logging.config.dictConfig(DEFAULT_CONFIGURATION)
@@ -107,11 +101,7 @@ class TeaLogger(logging.Logger):
 
         return tea
 
-    def __init__(
-        self,
-        name: str,
-        level: int | str = NOTSET
-    ) -> None:
+    def __init__(self, name: str, level: int | str = NOTSET) -> None:
         """Initialize Constructor
 
         Initialize the instance of the TeaLogger class.
@@ -144,11 +134,7 @@ def configure(configuration: dict | PathLike):
         configuration_data: dict = configuration
     else:
         try:
-            with open(
-                configuration,
-                mode="r",
-                encoding="utf-8"
-            ) as file:
+            with open(configuration, mode="r", encoding="utf-8") as file:
                 configuration_data = json.load(file)
         except Exception:
             raise
@@ -175,7 +161,7 @@ getLogger = get_logger
 
 
 def set_level(
-    level: Union[int, str] = NOTSET,
+    level: int | str = NOTSET,
 ):
     """Set the logging level of the Tea Logger (Package).
 
@@ -189,12 +175,7 @@ def set_level(
 setLevel = set_level
 
 
-def log(
-    level: Union[int, str],
-    message: str,
-    *args,
-    **kwargs
-):
+def log(level: int | str, message: str, *args, **kwargs):
     """Log message with give level severity.
 
     :param level: The severity level for the log
@@ -206,19 +187,10 @@ def log(
     if isinstance(level, str):
         level = logging.getLevelName(level)
 
-    tea.log(
-        level=level,
-        msg=message,
-        *args,
-        **kwargs
-    )
+    tea.log(level=level, msg=message, *args, **kwargs)
 
 
-def debug(
-    message: str,
-    *args,
-    **kwargs
-):
+def debug(message: str, *args, **kwargs):
     """Log message with severity DEBUG level.
 
     :param message: The message to log
@@ -227,11 +199,7 @@ def debug(
     tea.debug(message, *args, **kwargs)
 
 
-def info(
-    message: str,
-    *args,
-    **kwargs
-):
+def info(message: str, *args, **kwargs):
     """Log message with severity INFO level.
 
     :param message: The message to log
@@ -240,11 +208,7 @@ def info(
     tea.info(message, *args, **kwargs)
 
 
-def warning(
-    message: str,
-    *args,
-    **kwargs
-):
+def warning(message: str, *args, **kwargs):
     """Log message with severity WARNING level.
 
     :param message: The message to log
@@ -253,11 +217,7 @@ def warning(
     tea.warning(message, *args, **kwargs)
 
 
-def error(
-    message: str,
-    *args,
-    **kwargs
-):
+def error(message: str, *args, **kwargs):
     """Log message with severity ERROR level.
 
     :param message: The message to log
@@ -266,11 +226,7 @@ def error(
     tea.error(message, *args, **kwargs)
 
 
-def critical(
-    message: str,
-    *args,
-    **kwargs
-):
+def critical(message: str, *args, **kwargs):
     """Log message with severity CRITICAL level.
 
     :param message: The message to log
