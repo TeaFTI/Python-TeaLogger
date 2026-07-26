@@ -124,7 +124,7 @@ tea = TeaLogger(
 )
 
 
-def configure(configuration: dict | PathLike):
+def configure(configuration: dict | PathLike) -> None:
     """Configure the Tea Logger with the given configuration.
 
     :param configuration: The configuration for the Tea Logger
@@ -162,7 +162,7 @@ getLogger = get_logger
 
 def set_level(
     level: int | str = NOTSET,
-):
+) -> None:
     """Set the logging level of the Tea Logger (Package).
 
     :param level: The level for the TeaLogger, defaults to NOTSET
@@ -175,7 +175,7 @@ def set_level(
 setLevel = set_level
 
 
-def log(level: int | str, message: str, *args, **kwargs):
+def log(level: int | str, message: str, *args, **kwargs) -> None:
     """Log message with give level severity.
 
     :param level: The severity level for the log
@@ -190,7 +190,7 @@ def log(level: int | str, message: str, *args, **kwargs):
     tea.log(level=level, msg=message, *args, **kwargs)
 
 
-def debug(message: str, *args, **kwargs):
+def debug(message: str, *args, **kwargs) -> None:
     """Log message with severity DEBUG level.
 
     :param message: The message to log
@@ -199,7 +199,7 @@ def debug(message: str, *args, **kwargs):
     tea.debug(message, *args, **kwargs)
 
 
-def info(message: str, *args, **kwargs):
+def info(message: str, *args, **kwargs) -> None:
     """Log message with severity INFO level.
 
     :param message: The message to log
@@ -208,7 +208,7 @@ def info(message: str, *args, **kwargs):
     tea.info(message, *args, **kwargs)
 
 
-def warning(message: str, *args, **kwargs):
+def warning(message: str, *args, **kwargs) -> None:
     """Log message with severity WARNING level.
 
     :param message: The message to log
@@ -217,7 +217,7 @@ def warning(message: str, *args, **kwargs):
     tea.warning(message, *args, **kwargs)
 
 
-def error(message: str, *args, **kwargs):
+def error(message: str, *args, **kwargs) -> None:
     """Log message with severity ERROR level.
 
     :param message: The message to log
@@ -226,7 +226,7 @@ def error(message: str, *args, **kwargs):
     tea.error(message, *args, **kwargs)
 
 
-def critical(message: str, *args, **kwargs):
+def critical(message: str, *args, **kwargs) -> None:
     """Log message with severity CRITICAL level.
 
     :param message: The message to log
