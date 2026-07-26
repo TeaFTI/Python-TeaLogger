@@ -133,11 +133,8 @@ def configure(configuration: dict | PathLike) -> None:
     if isinstance(configuration, dict):
         configuration_data: dict = configuration
     else:
-        try:
-            with open(configuration, mode="r", encoding="utf-8") as file:
-                configuration_data = json.load(file)
-        except Exception:
-            raise
+        with open(configuration, mode="r", encoding="utf-8") as file:
+            configuration_data = json.load(file)
 
     logging.config.dictConfig(configuration_data)
 
@@ -187,7 +184,7 @@ def log(level: int | str, message: str, *args, **kwargs) -> None:
     if isinstance(level, str):
         level = logging.getLevelName(level)
 
-    tea.log(level=level, msg=message, *args, **kwargs)
+    tea.log(level, message, *args, **kwargs)
 
 
 def debug(message: str, *args, **kwargs) -> None:

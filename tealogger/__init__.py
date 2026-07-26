@@ -30,25 +30,22 @@ from .tealogger import (
 )
 
 __all__ = [
-    # Class
-    "TeaLogger",
-    # Level
-    "DEBUG",
-    "INFO",
-    "WARNING",
-    "ERROR",
     "CRITICAL",
+    "DEBUG",
+    "ERROR",
+    "INFO",
     "NOTSET",
-    # Function
+    "WARNING",
+    "TeaLogger",
     "configure",
-    "get_logger",
-    "getLogger",
-    "set_level",
-    "setLevel",
-    "log",
-    "debug",
-    "info",
-    "warning",
-    "error",
     "critical",
+    "debug",
+    "error",
+    "getLogger",
+    "get_logger",
+    "info",
+    "log",
+    "setLevel",
+    "set_level",
+    "warning",
 ]
