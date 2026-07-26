@@ -2,6 +2,9 @@
 # General #
 ###########
 
+# Documentation
+documentation/sphinx/_build/
+
 # Ruff
 .ruff_cache/
 

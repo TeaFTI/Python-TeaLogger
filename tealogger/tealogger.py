@@ -10,27 +10,24 @@ import logging
 import logging.config
 from os import PathLike
 from pathlib import Path
-from typing import Union
-
+from typing import Any
 
 # Log Level
 CRITICAL = logging.CRITICAL
 FATAL = logging.FATAL
 ERROR = logging.ERROR
 WARNING = logging.WARNING
-WARN = logging.WARN
+WARN = logging.WARNING
 INFO = logging.INFO
 DEBUG = logging.DEBUG
 NOTSET = logging.NOTSET
 
 
 # Default
-DEFAULT_CONFIGURATION = None
+DEFAULT_CONFIGURATION: Any = None
 CURRENT_MODULE_PATH = Path(__file__).parent.expanduser().resolve()
 with open(
-    CURRENT_MODULE_PATH / 'configuration' / 'default.json',
-    mode='r',
-    encoding='utf-8'
+    CURRENT_MODULE_PATH / "configuration" / "default.json", mode="r", encoding="utf-8"
 ) as file:
     DEFAULT_CONFIGURATION = json.load(file)
 
@@ -38,12 +35,7 @@ with open(
 class TeaLogger(logging.Logger):
     """Tea Logger"""
 
-    def __new__(
-        cls,
-        name: Union[str, None] = None,
-        level: Union[int, str] = NOTSET,
-        **kwargs
-    ):
+    def __new__(cls, name: str | None = None, level: int | str = NOTSET, **kwargs):
         """Create Constructor
 
         Create new instance of the TeaLogger class.
@@ -64,41 +56,43 @@ class TeaLogger(logging.Logger):
         """
 
         # Configuration
-        if kwargs.get('dictConfig'):
+        if kwargs.get("dictConfig"):
             # NOTE: No Coverage
             # Dictionary
-            # configuration = kwargs.get('dictConfig')
+            # configuration = kwargs.get("dictConfig")
 
-            # if 'loggers' not in configuration:
-            #     configuration['loggers'] = {}
-            #     configuration['loggers'][name] = {
-            #         'propagate': kwargs.get('propagate', False),
-            #         'handlers': kwargs.get('handler_list', ['default'])
+            # if "loggers" not in configuration:
+            #     configuration["loggers"] = {}
+            #     configuration["loggers"][name] = {
+            #         "propagate": kwargs.get("propagate", False),
+            #         "handlers": kwargs.get("handler_list", ["default"])
             #     }
 
-            logging.config.dictConfig(kwargs.get('dictConfig'))
-        elif kwargs.get('fileConfig'):
+            logging.config.dictConfig(kwargs.get("dictConfig"))
+        elif kwargs.get("fileConfig"):
             # File
             ...
         else:
             # Default
-            if 'loggers' not in DEFAULT_CONFIGURATION:
-                DEFAULT_CONFIGURATION['loggers'] = {}
-            if name not in DEFAULT_CONFIGURATION['loggers']:
+            if "loggers" not in DEFAULT_CONFIGURATION:
+                DEFAULT_CONFIGURATION["loggers"] = {}
+            if name not in DEFAULT_CONFIGURATION["loggers"]:
                 # Configure new logger with default configuration
-                DEFAULT_CONFIGURATION['loggers'][name] = {
-                    'propagate': kwargs.get('propagate', False),
-                    'handlers': kwargs.get('handler_list', ['default'])
+                DEFAULT_CONFIGURATION["loggers"][name] = {
+                    "propagate": kwargs.get("propagate", False),
+                    "handlers": kwargs.get("handler_list", ["default"]),
                 }
 
-                # configuration['loggers'][name]['handlers'] = kwargs.get('handler_list')
+                # configuration["loggers"][name]["handlers"] = kwargs.get("handler_list")
 
                 # NOTE: Override only individual configuration!
                 # Overriding the entire configuration will cause this child
                 # logger to inherit any missing configuration from the root
                 # logger. (Even if the configuration was set previously.)
-                DEFAULT_CONFIGURATION['loggers'][name]['level'] = logging.getLevelName(level)
-                # configuration['loggers'][name]['level'] = level
+                DEFAULT_CONFIGURATION["loggers"][name]["level"] = logging.getLevelName(
+                    level
+                )
+                # configuration["loggers"][name]["level"] = level
 
             logging.config.dictConfig(DEFAULT_CONFIGURATION)
 
@@ -107,11 +101,7 @@ class TeaLogger(logging.Logger):
 
         return tea
 
-    def __init__(
-        self,
-        name: str,
-        level: Union[int, str] = NOTSET
-    ) -> None:
+    def __init__(self, name: str, level: int | str = NOTSET) -> None:
         """Initialize Constructor
 
         Initialize the instance of the TeaLogger class.
@@ -124,7 +114,7 @@ class TeaLogger(logging.Logger):
         :rtype: TeaLogger
         """
         # Call super class
-        super().__init__(self, name=name, level=level)
+        super().__init__(name=name, level=level)
         # logging.Logger.__init__(self, name=name, level=level)
 
 
@@ -134,36 +124,31 @@ tea = TeaLogger(
 )
 
 
-def configure(configuration: dict | PathLike):
+def configure(configuration: dict | PathLike) -> None:
     """Configure the Tea Logger with the given configuration.
 
     :param configuration: The configuration for the Tea Logger
     :type configuration: dict or PathLike
     """
-    if not isinstance(configuration, dict):
-        try:
-            with open(
-                configuration,
-                mode='r',
-                encoding='utf-8'
-            ) as file:
-                configuration = json.load(file)
-        except Exception:
-            raise
+    if isinstance(configuration, dict):
+        configuration_data: dict = configuration
+    else:
+        with open(configuration, mode="r", encoding="utf-8") as file:
+            configuration_data = json.load(file)
 
-    logging.config.dictConfig(configuration)
+    logging.config.dictConfig(configuration_data)
 
 
 def get_logger(
     name: str,
-):
+) -> logging.Logger:
     """Get the configured Tea Logger instance.
 
     :param name: The name for the configured TeaLogger
     :type name: str
 
     :return: The configured Tea Logger instance
-    :rtype: TeaLogger
+    :rtype: logging.Logger
     """
     return logging.getLogger(name)
 
@@ -173,8 +158,8 @@ getLogger = get_logger
 
 
 def set_level(
-    level: Union[int, str] = NOTSET,
-):
+    level: int | str = NOTSET,
+) -> None:
     """Set the logging level of the Tea Logger (Package).
 
     :param level: The level for the TeaLogger, defaults to NOTSET
@@ -187,12 +172,7 @@ def set_level(
 setLevel = set_level
 
 
-def log(
-    level: Union[int, str],
-    message: str,
-    *args,
-    **kwargs
-):
+def log(level: int | str, message: str, *args, **kwargs) -> None:
     """Log message with give level severity.
 
     :param level: The severity level for the log
@@ -204,19 +184,10 @@ def log(
     if isinstance(level, str):
         level = logging.getLevelName(level)
 
-    tea.log(
-        level=level,
-        msg=message,
-        *args,
-        **kwargs
-    )
+    tea.log(level, message, *args, **kwargs)
 
 
-def debug(
-    message: str,
-    *args,
-    **kwargs
-):
+def debug(message: str, *args, **kwargs) -> None:
     """Log message with severity DEBUG level.
 
     :param message: The message to log
@@ -225,11 +196,7 @@ def debug(
     tea.debug(message, *args, **kwargs)
 
 
-def info(
-    message: str,
-    *args,
-    **kwargs
-):
+def info(message: str, *args, **kwargs) -> None:
     """Log message with severity INFO level.
 
     :param message: The message to log
@@ -238,11 +205,7 @@ def info(
     tea.info(message, *args, **kwargs)
 
 
-def warning(
-    message: str,
-    *args,
-    **kwargs
-):
+def warning(message: str, *args, **kwargs) -> None:
     """Log message with severity WARNING level.
 
     :param message: The message to log
@@ -251,11 +214,7 @@ def warning(
     tea.warning(message, *args, **kwargs)
 
 
-def error(
-    message: str,
-    *args,
-    **kwargs
-):
+def error(message: str, *args, **kwargs) -> None:
     """Log message with severity ERROR level.
 
     :param message: The message to log
@@ -264,11 +223,7 @@ def error(
     tea.error(message, *args, **kwargs)
 
 
-def critical(
-    message: str,
-    *args,
-    **kwargs
-):
+def critical(message: str, *args, **kwargs) -> None:
     """Log message with severity CRITICAL level.
 
     :param message: The message to log

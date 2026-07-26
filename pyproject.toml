@@ -1,76 +1,58 @@
 [build-system]
-requires = [
-    "setuptools>=61.0",
-    "wheel"
+requires = ["uv_build>=0.11.32,<0.12"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = ["tealogger"]
+module-root = ""
+source-include = [
+  "configuration/*",
 ]
-build-backend = "setuptools.build_meta"
 
 [project]
 name = "tealogger"
-dynamic = [
-    "version",
-    "readme"
-]
-dependencies = [
-    "pytest"
-]
-requires-python = ">= 3.10"
-authors = [
-    {name = "TeaFTI"},
-]
+version = "0.9.3"
 description = "Tea Logger"
-license = {file = "LICENSE"}
-keywords = [
-    "tealogger"
-]
+keywords = ["tealogger"]
+readme = "README.md"
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+requires-python = ">= 3.12"
+
 classifiers = [
-    "Development Status :: 3 - Alpha",
+  "Development Status :: 3 - Alpha",
 
-    "Intended Audience :: Developers",
-    "Topic :: Software Development :: Libraries",
+  "Intended Audience :: Developers",
+  "Topic :: Software Development :: Libraries",
 
-    "License :: OSI Approved :: MIT License",
+  "License :: OSI Approved :: MIT License",
 
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
 ]
 
-[project.optional-dependencies]
+authors = [ {name = "TeaFTI"} ]
+
+dependencies = []
+
+[dependency-groups]
 develop = [
-    "build",
-    "pytest-cov",
-    "pytest",
-    "ruff",
-    "twine"
+  "build",
+  "pytest-cov",
+  "pytest",
+  "ruff",
+  "ty"
 ]
 test = [
-    "pytest-cov",
-    "pytest",
-    "ruff",
+  "pytest>=9.0",
+  "pytest-cov",
+  "pytest-mock",
+  "tox",
 ]
 
 [project.urls]
 "Homepage" = "https://github.com/TeaFTI/Python-TeaLogger"
+Repository = "https://github.com/TeaFTI/Python-TeaLogger"
 "Bug Tracker" = "https://github.com/TeaFTI/Python-TeaLogger/issues"
-
-[tool.distutils.bdist_wheel]
-universal = true
-
-[tool.ruff.format]
-quote-style = "single"
-
-[tool.setuptools]
-packages = [
-    "tealogger"
-]
-
-[tool.setuptools.dynamic]
-readme = {file = ["README.md"], content-type = "text/markdown"}
-version = {file = "VERSION"}
-
-[tool.setuptools.package-data]
-tealogger = [
-    "configuration/*"
-]

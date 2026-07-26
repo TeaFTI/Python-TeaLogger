@@ -8,6 +8,7 @@ This module test functionality of Tea Logger with Pytest.
 import tealogger
 from tealogger import TeaLogger
 
+
 class TestClass:
     """Test Class"""
 
@@ -33,8 +34,8 @@ class TestClass:
         tealogger_set_id = hex(id(tealogger_set))
         tealogger_get_id = hex(id(tealogger_get))
 
-        tealogger.debug('TeaLogger First Hex ID: %s', tealogger_set_id)
-        tealogger.debug('TeaLogger Second Hex ID: %s', tealogger_get_id)
+        tealogger.debug("TeaLogger First Hex ID: %s", tealogger_set_id)
+        tealogger.debug("TeaLogger Second Hex ID: %s", tealogger_get_id)
 
         # Standard compare
         assert tealogger_set == tealogger_get

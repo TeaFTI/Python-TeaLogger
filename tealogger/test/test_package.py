@@ -38,8 +38,8 @@ class TestPackage:
         tealogger_set_id = hex(id(tealogger_set))
         tealogger_get_id = hex(id(tealogger_get))
 
-        tealogger.debug('TeaLogger First Hex ID: %s', tealogger_set_id)
-        tealogger.debug('TeaLogger Second Hex ID: %s', tealogger_get_id)
+        tealogger.debug("TeaLogger First Hex ID: %s", tealogger_set_id)
+        tealogger.debug("TeaLogger Second Hex ID: %s", tealogger_get_id)
 
         # Standard compare
         assert tealogger_set == tealogger_get
@@ -58,13 +58,13 @@ class TestPackage:
         :param attribute: The attribute of the TeaLogger object
         :type attribute: str
         """
-        tealogger.log(tealogger.DEBUG, 'TeaLogger: Debug Message')
-        tealogger.log('DEBUG', 'TeaLogger: Debug Message')
-        tealogger.debug('TeaLogger: Debug Message')
-        tealogger.info('TeaLogger: Info Message')
-        tealogger.warning('TeaLogger: Warning Message')
-        tealogger.error('TeaLogger: Error Message')
-        tealogger.critical('TeaLogger: Critical Message')
+        tealogger.log(tealogger.DEBUG, "TeaLogger: Debug Message")
+        tealogger.log("DEBUG", "TeaLogger: Debug Message")
+        tealogger.debug("TeaLogger: Debug Message")
+        tealogger.info("TeaLogger: Info Message")
+        tealogger.warning("TeaLogger: Warning Message")
+        tealogger.error("TeaLogger: Error Message")
+        tealogger.critical("TeaLogger: Critical Message")
 
         assert hasattr(tealogger, attribute)
 
@@ -91,7 +91,7 @@ class TestPackage:
         cross-platform. The capfd for some reason have issue working on
         Windows.
         """
-        level_logger_name = 'tealogger.test.package.level'
+        level_logger_name = "tealogger.test.package.level"
 
         level_logger = tealogger.get_logger(name=level_logger_name)
 
@@ -99,11 +99,11 @@ class TestPackage:
         level_logger.setLevel(level)
 
         with caplog.at_level(level, logger=level_logger_name):
-            level_logger.debug('Debug Message')
-            level_logger.info('Info Message')
-            level_logger.warning('Warning Message')
-            level_logger.error('Error Message')
-            level_logger.critical('Critical Message')
+            level_logger.debug("Debug Message")
+            level_logger.info("Info Message")
+            level_logger.warning("Warning Message")
+            level_logger.error("Error Message")
+            level_logger.critical("Critical Message")
 
         # print("Record: ", caplog.records)
         # print("Record Text: ", caplog.text)
@@ -130,20 +130,18 @@ class TestPackage:
         :param base_configuration: The base configuration fixture
         :type base_configuration: dict
         """
-        configure_logger_name = 'tealogger.test.package.configure'
+        configure_logger_name = "tealogger.test.package.configure"
 
         tealogger.configure(configuration=base_configuration)
 
-        configure_logger = tealogger.get_logger(
-            name=configure_logger_name
-        )
+        configure_logger = tealogger.get_logger(name=configure_logger_name)
 
         # Sanity Check
-        configure_logger.debug('Configure Dictionary Logger: Debug Message')
-        configure_logger.info('Configure Dictionary Logger: Info Message')
-        configure_logger.warning('Configure Dictionary Logger: Warning Message')
-        configure_logger.error('Configure Dictionary Logger: Error Message')
-        configure_logger.critical('Configure Dictionary Logger: Critical Message')
+        configure_logger.debug("Configure Dictionary Logger: Debug Message")
+        configure_logger.info("Configure Dictionary Logger: Info Message")
+        configure_logger.warning("Configure Dictionary Logger: Warning Message")
+        configure_logger.error("Configure Dictionary Logger: Error Message")
+        configure_logger.critical("Configure Dictionary Logger: Critical Message")
 
         assert configure_logger.name == configure_logger_name
 
@@ -156,22 +154,20 @@ class TestPackage:
         construction of an instance of the TeaLogger class, via
         PathLike.
         """
-        configure_logger_name = 'tealogger.test.package.configure'
+        configure_logger_name = "tealogger.test.package.configure"
 
         configuration_path = Path(__file__).parent.expanduser().resolve()
-        configuration_path = configuration_path / 'base_configuration.json'
+        configuration_path = configuration_path / "base_configuration.json"
 
         tealogger.configure(configuration=configuration_path)
-        configure_logger = tealogger.get_logger(
-            name=configure_logger_name
-        )
+        configure_logger = tealogger.get_logger(name=configure_logger_name)
 
         # Sanity Check
-        configure_logger.debug('Configure PathLike Logger: Debug Message')
-        configure_logger.info('Configure PathLike Logger: Info Message')
-        configure_logger.warning('Configure PathLike Logger: Warning Message')
-        configure_logger.error('Configure PathLike Logger: Error Message')
-        configure_logger.critical('Configure PathLike Logger: Critical Message')
+        configure_logger.debug("Configure PathLike Logger: Debug Message")
+        configure_logger.info("Configure PathLike Logger: Info Message")
+        configure_logger.warning("Configure PathLike Logger: Warning Message")
+        configure_logger.error("Configure PathLike Logger: Error Message")
+        configure_logger.critical("Configure PathLike Logger: Critical Message")
 
         assert configure_logger.name == configure_logger_name
 
@@ -187,19 +183,18 @@ class TestPackage:
         :param base_configuration: The base configuration fixture
         :type base_configuration: dict
         """
-        dict_config_logger_name = 'tealogger.test.package.dictconfig'
+        dict_config_logger_name = "tealogger.test.package.dictconfig"
 
         dict_config_logger = tealogger.TeaLogger(
-            dict_config_logger_name,
-            dictConfig=base_configuration
+            dict_config_logger_name, dictConfig=base_configuration
         )
 
         # Sanity Check
-        dict_config_logger.debug('Dict Config Logger: Debug Message')
-        dict_config_logger.info('Dict Config Logger: Info Message')
-        dict_config_logger.warning('Dict Config Logger: Warning Message')
-        dict_config_logger.error('Dict Config Logger: Error Message')
-        dict_config_logger.critical('Dict Config Logger: Critical Message')
+        dict_config_logger.debug("Dict Config Logger: Debug Message")
+        dict_config_logger.info("Dict Config Logger: Info Message")
+        dict_config_logger.warning("Dict Config Logger: Warning Message")
+        dict_config_logger.error("Dict Config Logger: Error Message")
+        dict_config_logger.critical("Dict Config Logger: Critical Message")
 
         assert dict_config_logger.name == dict_config_logger_name
 
@@ -213,18 +208,17 @@ class TestPackage:
         a minimal dictionary configuration (without loggers section) via
         JSON (JavaScript Object Notation).
         """
-        dict_config_logger_name = 'tealogger.test.package.dictconfig'
+        dict_config_logger_name = "tealogger.test.package.dictconfig"
 
         dict_config_logger = tealogger.TeaLogger(
-            dict_config_logger_name,
-            dictConfig=minimal_configuration
+            dict_config_logger_name, dictConfig=minimal_configuration
         )
 
         # Sanity Check
-        dict_config_logger.debug('Dict Config Minimal Logger: Debug Message')
-        dict_config_logger.info('Dict Config Minimal Logger: Info Message')
-        dict_config_logger.warning('Dict Config Minimal Logger: Warning Message')
-        dict_config_logger.error('Dict Config Minimal Logger: Error Message')
-        dict_config_logger.critical('Dict Config Minimal Logger: Critical Message')
+        dict_config_logger.debug("Dict Config Minimal Logger: Debug Message")
+        dict_config_logger.info("Dict Config Minimal Logger: Info Message")
+        dict_config_logger.warning("Dict Config Minimal Logger: Warning Message")
+        dict_config_logger.error("Dict Config Minimal Logger: Error Message")
+        dict_config_logger.critical("Dict Config Minimal Logger: Critical Message")
 
         assert dict_config_logger.name == dict_config_logger_name

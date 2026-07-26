@@ -5,21 +5,14 @@ Configure Test
 This module implement test configuration for Tea Logger.
 """
 
-from collections.abc import Iterator
 import json
 import platform
+from collections.abc import Iterator
 from itertools import product
 from pathlib import Path
 
 import pytest
-from pytest import (
-    Config,
-    ExitCode,
-    Metafunc,
-    Parser,
-    PytestPluginManager,
-    Session
-)
+from pytest import Config, ExitCode, Metafunc, Parser, PytestPluginManager, Session
 
 import tealogger
 
@@ -39,9 +32,9 @@ def pytest_addoption(parser: Parser, pluginmanager: PytestPluginManager):
     :param pluginmanager: The pytest plugin manager
     :type pluginmanager: pytest.PytestPluginManager
     """
-    conftest_logger.info('pytest Add Option')
-    conftest_logger.debug(f'Parser: {parser}')
-    conftest_logger.debug(f'Plugin Manager: {pluginmanager}')
+    conftest_logger.info("pytest Add Option")
+    conftest_logger.debug(f"Parser: {parser}")
+    conftest_logger.debug(f"Plugin Manager: {pluginmanager}")
 
 
 def pytest_configure(config: Config) -> None:
@@ -52,8 +45,8 @@ def pytest_configure(config: Config) -> None:
     :param config: The pytest config object
     :type config: pytest.Config
     """
-    conftest_logger.info('pytest Configure')
-    conftest_logger.debug(f'Config: {config}')
+    conftest_logger.info("pytest Configure")
+    conftest_logger.debug(f"Config: {config}")
 
 
 def pytest_sessionstart(session: Session) -> None:
@@ -65,26 +58,26 @@ def pytest_sessionstart(session: Session) -> None:
     :param session: The pytest session object
     :type session: pytest.Session
     """
-    conftest_logger.info('pytest Session Start')
-    conftest_logger.debug(f'Session: {session}')
+    conftest_logger.info("pytest Session Start")
+    conftest_logger.debug(f"Session: {session}")
 
-    conftest_logger.debug('Platform Information')
-    conftest_logger.debug(f'Architecture: {platform.architecture()}')
-    conftest_logger.debug(f'Machine: {platform.machine()}')
-    conftest_logger.debug(f'Node: {platform.node()}')
-    conftest_logger.debug(f'Platform: {platform.platform()}')
-    conftest_logger.debug(f'Processor: {platform.processor()}')
-    conftest_logger.debug(f'Python Build: {platform.python_build()}')
-    conftest_logger.debug(f'Python Compiler: {platform.python_compiler()}')
-    conftest_logger.debug(f'Python Branch: {platform.python_branch()}')
-    conftest_logger.debug(f'Python Implementation: {platform.python_implementation()}')
-    conftest_logger.debug(f'Python Revision: {platform.python_revision()}')
-    conftest_logger.debug(f'Python Version: {platform.python_version()}')
-    conftest_logger.debug(f'Python Version Tuple: {platform.python_version_tuple()}')
-    conftest_logger.debug(f'Release: {platform.release()}')
-    conftest_logger.debug(f'System: {platform.system()}')
-    conftest_logger.debug(f'Version: {platform.version()}')
-    conftest_logger.debug(f'Unix Name: {platform.uname()}')
+    conftest_logger.debug("Platform Information")
+    conftest_logger.debug(f"Architecture: {platform.architecture()}")
+    conftest_logger.debug(f"Machine: {platform.machine()}")
+    conftest_logger.debug(f"Node: {platform.node()}")
+    conftest_logger.debug(f"Platform: {platform.platform()}")
+    conftest_logger.debug(f"Processor: {platform.processor()}")
+    conftest_logger.debug(f"Python Build: {platform.python_build()}")
+    conftest_logger.debug(f"Python Compiler: {platform.python_compiler()}")
+    conftest_logger.debug(f"Python Branch: {platform.python_branch()}")
+    conftest_logger.debug(f"Python Implementation: {platform.python_implementation()}")
+    conftest_logger.debug(f"Python Revision: {platform.python_revision()}")
+    conftest_logger.debug(f"Python Version: {platform.python_version()}")
+    conftest_logger.debug(f"Python Version Tuple: {platform.python_version_tuple()}")
+    conftest_logger.debug(f"Release: {platform.release()}")
+    conftest_logger.debug(f"System: {platform.system()}")
+    conftest_logger.debug(f"Version: {platform.version()}")
+    conftest_logger.debug(f"Unix Name: {platform.uname()}")
 
 
 def pytest_generate_tests(metafunc: Metafunc):
@@ -115,38 +108,38 @@ def pytest_generate_tests(metafunc: Metafunc):
     :param metafunc: Objects passed to the pytest_generate_tests hook
     :type metafunc: pytest.Metafunc
     """
-    conftest_logger.info('pytest Generate Test')
-    conftest_logger.debug(f'Metafunc: {metafunc}')
-    conftest_logger.debug(f'Module Name: {metafunc.module.__name__}')
-    conftest_logger.debug(f'Class Name: {metafunc.cls.__name__}')
-    conftest_logger.debug(f'Function Name: {metafunc.function.__name__}')
-    conftest_logger.debug(f'Fixture Names: {metafunc.fixturenames}')
+    conftest_logger.info("pytest Generate Test")
+    conftest_logger.debug(f"Metafunc: {metafunc}")
+    conftest_logger.debug(f"Module Name: {metafunc.module.__name__ if metafunc.module else None}")
+    conftest_logger.debug(f"Class Name: {metafunc.cls.__name__ if metafunc.cls else None}")
+    conftest_logger.debug(f"Function Name: {metafunc.function.__name__}")
+    conftest_logger.debug(f"Fixture Names: {metafunc.fixturenames}")
 
     # Parse metafunc name
-    module_name = metafunc.module.__name__.split('.')[-1]
-    class_name = metafunc.cls.__name__
+    module_name = metafunc.module.__name__.split(".")[-1] if metafunc.module else ""
+    class_name = metafunc.cls.__name__ if metafunc.cls else ""
     function_name = metafunc.function.__name__
 
     # Load the test data
     test_data_path = None
-    if (Path(__file__).parent / f'{module_name}.json').exists():
-        test_data_path = Path(__file__).parent / f'{module_name}.json'
-    elif (Path(__file__).parent / 'data.json').exists():
-        test_data_path = Path(__file__).parent / 'data.json'
+    if (Path(__file__).parent / f"{module_name}.json").exists():
+        test_data_path = Path(__file__).parent / f"{module_name}.json"
+    elif (Path(__file__).parent / "data.json").exists():
+        test_data_path = Path(__file__).parent / "data.json"
 
     # Inject the test data
     if test_data_path:
         try:
-            with open(test_data_path, 'r', encoding='utf-8') as file:
+            with open(test_data_path, "r", encoding="utf-8") as file:
                 data = json.load(file)
         except FileNotFoundError as error:
-            conftest_logger.warning(f'No Test Data Found: {module_name}')
-            conftest_logger.error(f'Error: {error}')
-            pytest.skip(f'Skip No Test Data Found: {module_name}')
+            conftest_logger.warning(f"No Test Data Found: {module_name}")
+            conftest_logger.error(f"Error: {error}")
+            pytest.skip(f"Skip No Test Data Found: {module_name}")
         except TypeError as error:
-            conftest_logger.warning(f'No Test Data Path Set: {module_name}')
-            conftest_logger.error(f'Error: {error}')
-            pytest.skip(f'Skip No Test Data Path Set: {module_name}')
+            conftest_logger.warning(f"No Test Data Path Set: {module_name}")
+            conftest_logger.error(f"Error: {error}")
+            pytest.skip(f"Skip No Test Data Path Set: {module_name}")
 
         ################
         # Module Level #
@@ -156,19 +149,19 @@ def pytest_generate_tests(metafunc: Metafunc):
             and class_name in data[module_name]
             and function_name in data[module_name][class_name]
         ):
-            conftest_logger.debug('Generate Module Test')
+            conftest_logger.debug("Generate Module Test")
             function_data = data[module_name][class_name][function_name]
-            test_data = function_data['data']
-            # conftest_logger.debug(f'Test Data: {test_data}')
+            test_data = function_data["data"]
+            # conftest_logger.debug(f"Test Data: {test_data}")
 
             argument_name_list = test_data.keys()
             argument_value_list = test_data.values()
 
-            strategy = function_data['strategy']
-            # conftest_logger.debug(f'Strategy: {strategy}')
+            strategy = function_data["strategy"]
+            # conftest_logger.debug(f"Strategy: {strategy}")
 
             match strategy:
-                case 'product':
+                case "product":
                     # Create the cartesian product of the argument value to test
                     argument_value_list = list(product(*argument_value_list))
                 case _:
@@ -177,24 +170,24 @@ def pytest_generate_tests(metafunc: Metafunc):
 
             # Exclude
             if (
-                'exclude' in function_data
-                and 'strategy' in function_data['exclude']
-                and 'data' in function_data['exclude']
+                "exclude" in function_data
+                and "strategy" in function_data["exclude"]
+                and "data" in function_data["exclude"]
             ):
-                exclude_strategy = function_data['exclude']['strategy']
-                exclude_data = function_data['exclude']['data']
-                # conftest_logger.debug(f'Exclude Strategy: {exclude_strategy}')
-                # conftest_logger.debug(f'Exclude Data: {exclude_data}')
+                exclude_strategy = function_data["exclude"]["strategy"]
+                exclude_data = function_data["exclude"]["data"]
+                # conftest_logger.debug(f"Exclude Strategy: {exclude_strategy}")
+                # conftest_logger.debug(f"Exclude Data: {exclude_data}")
 
                 match exclude_strategy:
-                    case 'product':
+                    case "product":
                         # Create the cartesian product of the exclude data
                         exclude_value_list = list(product(*exclude_data.values()))
                     case _:
                         # Default
                         exclude_value_list = list(product(*exclude_data.values()))
 
-                # conftest_logger.debug(f'Exclude Value List: {exclude_value_list}')
+                # conftest_logger.debug(f"Exclude Value List: {exclude_value_list}")
 
                 # Remove the exclude value from the argument value
                 # NOTE: Not sure if this is best implementation
@@ -207,8 +200,8 @@ def pytest_generate_tests(metafunc: Metafunc):
                     )
                 ]
 
-            # conftest_logger.debug(f'Argument Name List: {argument_name_list}')
-            # conftest_logger.debug(f'Argument Value List: {argument_value_list}')
+            # conftest_logger.debug(f"Argument Name List: {argument_name_list}")
+            # conftest_logger.debug(f"Argument Value List: {argument_value_list}")
 
             # Parametrize the test(s), only if test_data is available
             metafunc.parametrize(
@@ -220,13 +213,13 @@ def pytest_generate_tests(metafunc: Metafunc):
         # Class Level #
         ###############
         elif class_name in data:
-            conftest_logger.debug('Generate Class Test')
+            conftest_logger.debug("Generate Class Test")
 
         ##################
         # Function Level #
         ##################
         elif function_name in data:
-            conftest_logger.debug('Generate Function Test')
+            conftest_logger.debug("Generate Function Test")
 
 
 def pytest_sessionfinish(session: Session, exitstatus: int | ExitCode):
@@ -242,9 +235,9 @@ def pytest_sessionfinish(session: Session, exitstatus: int | ExitCode):
     :param exitstatus: The status which pytest will return to the system
     :type exitstatus: Union[int, pytest.ExitCode]
     """
-    conftest_logger.info('pytest Session Finish')
-    conftest_logger.debug(f'Session: {session}')
-    conftest_logger.debug(f'Exit Status: {exitstatus}')
+    conftest_logger.info("pytest Session Finish")
+    conftest_logger.debug(f"Session: {session}")
+    conftest_logger.debug(f"Exit Status: {exitstatus}")
 
 
 def pytest_unconfigure(config: Config):
@@ -257,11 +250,11 @@ def pytest_unconfigure(config: Config):
     :param config: The pytest config object
     :type config: pytest.Config
     """
-    conftest_logger.info('pytest Unconfigure')
-    conftest_logger.debug(f'Config: {config}')
+    conftest_logger.info("pytest Unconfigure")
+    conftest_logger.debug(f"Config: {config}")
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def current_module_path() -> Path:
     """Current Module Path
 
@@ -270,16 +263,15 @@ def current_module_path() -> Path:
     :return: The current module path
     :rtype: Path
     """
-    conftest_logger.info('Current Module Path')
+    conftest_logger.info("Current Module Path")
     conftest_logger.debug(
-        f'Current Module Path: '
-        f'{Path(__file__).parent.expanduser().resolve()}'
+        f"Current Module Path: {Path(__file__).parent.expanduser().resolve()}"
     )
 
     return Path(__file__).parent.expanduser().resolve()
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def base_configuration(current_module_path: Path) -> Iterator[dict]:
     """Base Configuration Fixture
 
@@ -291,20 +283,18 @@ def base_configuration(current_module_path: Path) -> Iterator[dict]:
     :return: The base configuration
     :rtype: dict
     """
-    conftest_logger.info('Base Configuration')
+    conftest_logger.info("Base Configuration")
 
     configuration = None
     with open(
-        current_module_path / 'base_configuration.json',
-        mode='r',
-        encoding='utf-8'
+        current_module_path / "base_configuration.json", mode="r", encoding="utf-8"
     ) as file:
         configuration = json.load(file)
 
     yield configuration
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def minimal_configuration(current_module_path: Path) -> Iterator[dict]:
     """Minimal Configuration Fixture
 
@@ -316,13 +306,11 @@ def minimal_configuration(current_module_path: Path) -> Iterator[dict]:
     :return: The minimal configuration
     :rtype: dict
     """
-    conftest_logger.info('Minimal Configuration')
+    conftest_logger.info("Minimal Configuration")
 
     configuration = None
     with open(
-        current_module_path / 'minimal_configuration.json',
-        mode='r',
-        encoding='utf-8'
+        current_module_path / "minimal_configuration.json", mode="r", encoding="utf-8"
     ) as file:
         configuration = json.load(file)
 
